@@ -1,0 +1,5 @@
+This is a pong game in Python, made by SmartViking.
+
+Packages required to play:
+python2 (NOTE - Python 3 users, use python2 Crazy_China_Pong.py to play)
+python-pygames 
