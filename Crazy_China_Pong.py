@@ -22,7 +22,7 @@ pygame.init() and pygame.display.set_caption('Crazy China Pong')
 def main():
     score = 0
     clock = pygame.time.Clock()
-    white = 255,255,255
+
     size = width, height = 600,400
     screen = pygame.display.set_mode(size)
     gun = pygame.image.load("data/gun.png")
