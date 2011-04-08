@@ -86,7 +86,7 @@ def main():
             while 1:
                 #print "Your score was: "+str(int(score))
                 for event in pygame.event.get():
-                    if event.type == pygame.QUIT or if event.type == KEYDOWN and event.key == K_ESCAPE:
+                    if event.type == pygame.QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
                         sys.exit()
                     if event.type == KEYDOWN and event.key == K_SPACE:
                         main()
