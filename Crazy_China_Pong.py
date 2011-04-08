@@ -50,9 +50,7 @@ def main():
     while 1:
         score += scorespeed
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                sys.exit()
-            if event.type == KEYDOWN and event.key == K_ESCAPE:
+            if event.type == pygame.QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
                 sys.exit()
     
         gunhbackup = gunh
@@ -96,34 +94,20 @@ def main():
         
         font = pygame.font.Font(None, 17)
 
-        text = font.render("Score:  "+str(int(score)), True, (255,
-255, 255), (159, 182, 205))
-        screen.blit(text, (520,10))
+        text = font.render("Score:  "+str(int(score)), True, (255, 255, 255), (159, 182, 205))
+        text2 = font.render("Speed:  "+str(guyspeed), True, (255, 255, 255), (159, 182, 205))	
+	screen.blit(text2, (520, 30))   
+	screen.blit(text, (520,10))
         pygame.display.update()
         clock.tick(100)
 
-        if score > 30:
-            if guyspeed == 4:
-                guyspeed = 6
-                scorespeed = 0.04
-        if score > 60:
-            if guyspeed == 6:
-                guyspeed = 10
-                scorespeed = 0.08
-        if score > 100:
-            if guyspeed == 10:
-                scorespeed = 0.12
-                guyspeed = 14
-        if score > 170:
-            if guyspeed == 14:
-                guyspeed = 18
-        if score > 250:
-            if guyspeed == 18:
-                scorespeed = 0.24
-                guyspeed = 24
-        if score > 1000:
-            if guyspeed == 24:
-                scorespeed = 0.5
-                guyspeed = 30
-main()
+	if score < 1000:
+		guyspeed = int(3*score/30)
+		scorespeed = 0.04*(guyspeed/3)
+		if guyspeed < 4:
+			guyspeed = 4
+			scorespeed = 0.04
+		if guyspeed > 22:
+			guyspeed = 22
 
+main()
