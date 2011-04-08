@@ -65,7 +65,7 @@ def main():
         else:
             farmer = guy
             guyw -= guyspeed
-            if guyw < 32 and guyh > gunh-40 and guyh < gunh+100+0 and guyw > 8:
+            if guyw < 32 and guyh > gunh-40 and guyh < gunh+100 and guyw > 8:
                 east = 1
                 guydirs = guydirs- (gunh-(guyh+20)+50)/50.0
         if guyw < 0:
@@ -78,7 +78,7 @@ def main():
 				sys.exit()
         screen.blit(bg,(0,0))
         text = font.render("Score:  "+str(int(score))+"   "+"Speed: "+str(int(guyspeed)), True, (255, 255, 255), (159, 182, 205))
-        screen.blit(text, (10,10))
+        screen.blit(text, (50,10))
 
         screen.blit(farmer,(guyw,guyh))
         screen.blit(gun,(30,gunh))
