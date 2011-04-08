@@ -17,14 +17,12 @@
 """
 import sys, pygame
 from pygame.locals import *
-pygame.init()
-pygame.display.set_caption('Crazy China Pong')
+pygame.init() and pygame.display.set_caption('Crazy China Pong')
 
 def main():
     score = 0
     clock = pygame.time.Clock()
     white = 255,255,255
-    #the window size
     size = width, height = 600,400
     screen = pygame.display.set_mode(size)
     gun = pygame.image.load("data/gun.png")
@@ -46,7 +44,6 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
                 sys.exit()
-        gunhbackup = gunh
         keystate = pygame.key.get_pressed()
         if keystate[pygame.K_UP]:
 		gunh -= gunspeed
@@ -55,8 +52,8 @@ def main():
         if guyh < -10 or guyh > 370:
             guydirs = guydirs - (guydirs*2)
         guyh = guyh + guydirs
-        if gunh > 350 or gunh < -50:
-            gunh = gunhbackup
+        if gunh-150 > 200 or gunh+150 < 100:
+            gunh = abs(gunh-150)
         if east:
             farmer = guy2
             guyw += guyspeed
@@ -69,26 +66,19 @@ def main():
                 east = 1
                 guydirs = guydirs- (gunh-(guyh+20)+50)/100.0
         if guyw < 0:
-            screen.blit(finished,(0,0))
-            pygame.display.update()
+            screen.blit(finished,(0,0)) and pygame.display.update()
             print "Your score was: "+str(int(score))
             while 1:
-                #print "Your score was: "+str(int(score))
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
                         sys.exit()
                     if event.type == KEYDOWN and event.key == K_SPACE:
                         main()
-        screen.blit(bg,(0,0))
-        screen.blit(farmer,(guyw,guyh))
-        screen.blit(gun,(30,gunh))
-        font = pygame.font.Font(None, 17)
+        screen.blit(bg,(0,0)) and screen.blit(farmer,(guyw,guyh)) and screen.blit(gun,(30,gunh))
+	font = pygame.font.Font(None, 17)
         text = font.render("Score:  "+str(int(score)), True, (255, 255, 255), (159, 182, 205))
         text2 = font.render("Speed:  "+str(guyspeed), True, (255, 255, 255), (159, 182, 205))	
-	screen.blit(text2, (520, 30))   
-	screen.blit(text, (520,10))
-        pygame.display.update()
-        clock.tick(100)
+	screen.blit(text2, (520, 30)) and screen.blit(text, (520,10)) and pygame.display.update() and clock.tick(100)
 	if score < 1000:
 		guyspeed = int(3*score/30)
 		scorespeed = 0.04*(guyspeed/3)
