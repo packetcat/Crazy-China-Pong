@@ -1,1 +1,7 @@
-Run the Crazy_China_Pong.py file to play the game, coded with python 2.6 and pygame 1.8.1
+This is a pong game in Python, made by SmartViking.
+
+Packages required to play:
+python 2.x (NOTE - Python 3 users, use python2 Crazy_China_Pong.py to play)
+python-pygame.
+
+Tested with python 2.6 and pygame 1.8.1
