@@ -17,7 +17,7 @@
 """
 import sys, pygame
 from pygame.locals import *
-pygame.init() and pygame.display.set_caption('Crazy China Pong - 1.0.0.0 Beta 14')
+pygame.init() and pygame.display.set_caption('Crazy China Pong - 1.0.0.0 Beta 15')
 
 def main():
     score = 0
@@ -40,6 +40,7 @@ def main():
     scorespeed = 0.01
 
     font = pygame.font.Font(None, 17)
+
     while 1:
         score += scorespeed
         for event in pygame.event.get():
@@ -69,20 +70,19 @@ def main():
 
         if guyw < 0:
             screen.blit(finished,(0,0)) and pygame.display.update()
-            while 1:
+            while 2:
                 for event in pygame.event.get():
                 	if event.type == KEYDOWN and event.key == K_SPACE:
                         	main()
 			if event.type == pygame.QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
 				sys.exit()
-                clock.tick(10)
+                clock.tick(1)
 
-
-        screen.blit(bg,(0,0))
         text = font.render("Score:  "+str(int(score))+"   "+"Speed:  "+str(int(guyspeed)), True, (255, 255, 255), (159, 182, 205))
         screen.blit(text, (50,10))
         screen.blit(farmer,(guyw,guyh))
         screen.blit(gun,(30,gunh))
+	screen.blit(bg,(0,0))
 
 	if score < 1000:
 		guyspeed = 2*score/60
@@ -94,5 +94,5 @@ def main():
 			guyspeed = 22
 
         pygame.display.update()
-        clock.tick(100)
+        clock.tick(90)
 main()
