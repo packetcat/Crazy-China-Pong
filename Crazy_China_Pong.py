@@ -24,8 +24,8 @@ def main():
     clock = pygame.time.Clock()
     size = width, height = 600,400
     screen = pygame.display.set_mode(size)
-    gun = pygame.image.load("data/gun.png")
-    bg = pygame.image.load("data/bg.png")
+    gun = pygame.image.load("data/gun.png").convert()
+    bg = pygame.image.load("data/bg.png").convert()
     guy = pygame.image.load("data/guy.png")
     guy2 = pygame.image.load("data/guy2.png")
     finished = pygame.image.load("data/finished.png")
@@ -39,7 +39,7 @@ def main():
     gunspeed = 4
     scorespeed = 0.01
 
-    font = pygame.font.Font(None, 17)
+    font = pygame.font.Font(None, 20)
     while 1:
         score += scorespeed
         for event in pygame.event.get():
@@ -93,6 +93,6 @@ def main():
 		if guyspeed >= 22:
 			guyspeed = 22
 
-        pygame.display.update()
+        pygame.display.flip()
         clock.tick(100)
 main()
