@@ -66,14 +66,18 @@ def main():
             if guyw < 31 and guyh > gunh-40 and guyh < gunh+100 and guyw > 8:
                 east = 1
                 guydirs = guydirs- (gunh-(guyh+20)+50)/50.0
+
         if guyw < 0:
             screen.blit(finished,(0,0)) and pygame.display.update()
-            while 2:
+            while 1:
                 for event in pygame.event.get():
                 	if event.type == KEYDOWN and event.key == K_SPACE:
                         	main()
 			if event.type == pygame.QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
 				sys.exit()
+                clock.tick(10)
+
+
         screen.blit(bg,(0,0))
         text = font.render("Score:  "+str(int(score))+"   "+"Speed:  "+str(int(guyspeed)), True, (255, 255, 255), (159, 182, 205))
         screen.blit(text, (50,10))
