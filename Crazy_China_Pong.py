@@ -17,7 +17,7 @@
 """
 import sys, pygame
 from pygame.locals import *
-pygame.init() and pygame.display.set_caption('Crazy China Pong - 1.0.0.0 Beta 15')
+pygame.init() and pygame.display.set_caption('Crazy China Pong - 1.0.0.0 Beta 16')
 
 def main():
     score = 0
@@ -44,7 +44,6 @@ def main():
         score += scorespeed
         for event in pygame.event.get():
             if event.type == pygame.QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
-                print "Bye! :)"
                 sys.exit()
         keystate = pygame.key.get_pressed()
         if gunh > 300  or gunh < 0:
@@ -78,7 +77,6 @@ def main():
                     if event.type == KEYDOWN and event.key == K_SPACE:
                         main()
 	            if event.type == pygame.QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
-                        print "Bye! :)"
                         sys.exit()
 
         screen.blit(bg,(0,0))
@@ -97,5 +95,5 @@ def main():
 			guyspeed = 22
 
         pygame.display.update()
-        clock.tick(100)
+        clock.tick(90)
 main()
