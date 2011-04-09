@@ -77,12 +77,8 @@ def main():
         screen.blit(bg,(0,0))
         text = font.render("Score:  "+str(int(score))+"   "+"Speed:  "+str(int(guyspeed)), True, (255, 255, 255), (159, 182, 205))
         screen.blit(text, (50,10))
-
         screen.blit(farmer,(guyw,guyh))
         screen.blit(gun,(30,gunh))
-	#font = pygame.font.Font(None, 17)
-        #text = font.render("Score:  "+str(int(score))+"   "+"Speed:  "+str(int(guyspeed)), True, (255, 255, 255), (159, 182, 205))	
-	#screen.blit(text, (50,10))
 
 	if score < 1000:
 		guyspeed = 2*score/60
