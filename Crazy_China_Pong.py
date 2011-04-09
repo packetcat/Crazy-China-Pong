@@ -17,7 +17,7 @@
 """
 import sys, pygame
 from pygame.locals import *
-pygame.init() and pygame.display.set_caption('Crazy China Pong - 1.0.0.0 Beta 13')
+pygame.init() and pygame.display.set_caption('Crazy China Pong - 1.0.0.0 Beta 15')
 
 def main():
     score = 0
