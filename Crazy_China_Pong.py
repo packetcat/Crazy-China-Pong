@@ -44,6 +44,7 @@ def main():
         score += scorespeed
         for event in pygame.event.get():
             if event.type == pygame.QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
+                print "Bye! :)"
                 sys.exit()
         keystate = pygame.key.get_pressed()
         if gunh > 300  or gunh < 0:
@@ -68,15 +69,17 @@ def main():
                 guydirs = guydirs- (gunh-(guyh+20)+50)/50.0
 
         if guyw < 0:
-            screen.blit(finished,(0,0)) and pygame.display.update()
-            while 1:
-                for event in pygame.event.get():
-                	if event.type == KEYDOWN and event.key == K_SPACE:
-                        	main()
-			if event.type == pygame.QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
-				sys.exit()
-                clock.tick(10)
+            screen.blit(finished,(0,0))
+            pygame.display.update()
 
+            while 1:
+                clock.tick(1)
+                for event in pygame.event.get():
+                    if event.type == KEYDOWN and event.key == K_SPACE:
+                        main()
+	            if event.type == pygame.QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
+                        print "Bye! :)"
+                        sys.exit()
 
         screen.blit(bg,(0,0))
         text = font.render("Score:  "+str(int(score))+"   "+"Speed:  "+str(int(guyspeed)), True, (255, 255, 255), (159, 182, 205))
@@ -93,6 +96,6 @@ def main():
 		if guyspeed >= 22:
 			guyspeed = 22
 
-        pygame.display.flip()
+        pygame.display.update()
         clock.tick(100)
 main()
