@@ -13,4 +13,5 @@ Does NOT work with Python 3.
 
         TODO:
     * A highscore, have a file which stores the scores and maybe have some default ones.
-    * Some type of powerups, I'm thinking simple but effective. Maybe simply an increase in score for catching an object with the gun. UPDATE: Kinda did this, works nicely.
+    * Some type of powerups, I'm thinking simple but effective. Maybe simply an increase in score for catching an object with the gun. 
+      UPDATE: Kinda did this, works nicely.
