@@ -148,4 +148,13 @@ def main():
         pygame.display.update()
         clock.tick(90)
 
+
+        # Outputs score to a file
+        #with open('score.txt', 'a') as f:
+		#	f.write(" "*2+"Your final score was: "+str(int(score))+" (Bonus: "+str(bonuspoints)+")"+" ")
+        #f.close()
+        
+        # The code above works, but not in the way I want, It outputs the score continuously [I just want the final score after game finishes or exits] , and not in newlines. 
+        # If anyone can fix it, I will be very grateful
+
 if __name__ == "__main__": main()
