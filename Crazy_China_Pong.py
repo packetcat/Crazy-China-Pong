@@ -21,6 +21,13 @@ from pygame.locals import *
 Name= raw_input( "Name: " )
 pygame.init() and pygame.display.set_caption('Crazy China Pong - 1.0 Beta 20')
 
+def highscore(player,score):
+    # Outputs score to a file
+    with open('score.txt', 'a') as f:
+        f.write(player+","+str(int(score))+"\n")
+    f.close()
+
+
 def main():	
     score = 0
     #clock method to control the frames per second, It's used at the bottom of main()
@@ -100,6 +107,7 @@ def main():
             screen.blit(gun,(30,gunh))
             screen.blit(text,(0,365))
             pygame.display.update()
+            highscore(Name,score)
             while 1:
                 #Limiting the FPS in the pause screen so it uses minimal resources
                 clock.tick(5)
@@ -150,13 +158,5 @@ def main():
         pygame.display.update()
         clock.tick(90)
 
-
-        # Outputs score to a file
-        with open('score.txt', 'a') as f:
-			f.write(" "*2+"Your final score was: "+str(int(score))+" (Bonus: "+str(bonuspoints)+")"+" " "\n")
-        f.close()
-        
-        # The code above works, but not in the way I want, It outputs the score continuously. [I just want the final score after game finishes or exits] 
-        # If anyone can fix it, I will be very grateful
 
 if __name__ == "__main__": main()
