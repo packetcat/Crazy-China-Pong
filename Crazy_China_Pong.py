@@ -17,7 +17,7 @@
 """
 import sys, pygame, random
 from pygame.locals import *
-pygame.init() and pygame.display.set_caption('Crazy China Pong - 1.0 Beta 16')
+pygame.init() and pygame.display.set_caption('Crazy China Pong - 1.0 Beta 17')
 
 def main():
     score = 0
@@ -145,4 +145,5 @@ def main():
         #Update the new images or whatever
         pygame.display.update()
         clock.tick(90)
+
 if __name__ == "__main__": main()
