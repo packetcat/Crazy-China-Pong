@@ -17,9 +17,11 @@
 """
 import sys, pygame, random
 from pygame.locals import *
-pygame.init() and pygame.display.set_caption('Crazy China Pong - 1.0 Beta 18')
+# Prompts for name of player, doesn't do anything with this data at the moment
+Name= raw_input( "Name: " )
+pygame.init() and pygame.display.set_caption('Crazy China Pong - 1.0 Beta 20')
 
-def main():
+def main():	
     score = 0
     #clock method to control the frames per second, It's used at the bottom of main()
     clock = pygame.time.Clock()
@@ -150,11 +152,11 @@ def main():
 
 
         # Outputs score to a file
-        #with open('score.txt', 'a') as f:
-		#	f.write(" "*2+"Your final score was: "+str(int(score))+" (Bonus: "+str(bonuspoints)+")"+" ")
-        #f.close()
+        with open('score.txt', 'a') as f:
+			f.write(" "*2+"Your final score was: "+str(int(score))+" (Bonus: "+str(bonuspoints)+")"+" " "\n")
+        f.close()
         
-        # The code above works, but not in the way I want, It outputs the score continuously [I just want the final score after game finishes or exits] , and not in newlines. 
+        # The code above works, but not in the way I want, It outputs the score continuously. [I just want the final score after game finishes or exits] 
         # If anyone can fix it, I will be very grateful
 
 if __name__ == "__main__": main()
