@@ -17,29 +17,41 @@
 """
 import sys, pygame
 from pygame.locals import *
-pygame.init() and pygame.display.set_caption('Crazy China Pong - 1.0.0.0 Beta 16')
+pygame.init() and pygame.display.set_caption('Crazy China Pong - 1.0 Beta 16')
 
 def main():
     score = 0
+    #clock method to control the frames per second, It's used at the bottom of main()
     clock = pygame.time.Clock()
     size = width, height = 600,400
     screen = pygame.display.set_mode(size)
+
+    #Importing the images, converting those that can be converted because it is more efficient or whatever
     gun = pygame.image.load("data/gun.png").convert()
     bg = pygame.image.load("data/bg.png").convert()
     guy = pygame.image.load("data/guy.png")
     guy2 = pygame.image.load("data/guy2.png")
     finished = pygame.image.load("data/finished.png")
+
+    #Farmer is the variable that decides which way the guy is pointing, it's changed each time it hits the gun and the other side of the window
     farmer = guy2
+    #The height of the gun
     gunh = 125.5
+    #The height and width of the guy
     guyh = 200
     guyw = 280
+    #Variable which decides if the farmer/guy is turning east or west
     east = 1
+
+    #Guydirs basically is the value guyh will change each loop, it changes between positive and negative numbers
     guydirs = 0.2
     guyspeed = 4
     gunspeed = 4
+    #How much the score will increase each loop
     scorespeed = 0.01
 
     font = pygame.font.Font(None, 20)
+    endscorefont = pygame.font.Font(None, 40)
     while 1:
         score += scorespeed
         for event in pygame.event.get():
@@ -48,13 +60,18 @@ def main():
         keystate = pygame.key.get_pressed()
         if gunh > 300  or gunh < 0:
             gunh = gunh-(4*(gunh/abs(gunh)))
+
+        #Controls for the gun
         if keystate[pygame.K_UP]:
 		gunh -= gunspeed
-	if keystate[pygame.K_DOWN]:
+        if keystate[pygame.K_DOWN]:
 		gunh += gunspeed
+        #This part makes sure that the guy bounces in the other direction when he hits the top or the bottom
         if guyh < -10 or guyh > 370:
             guydirs = guydirs - (guydirs*2)
         guyh = guyh + guydirs
+
+        #This part makes sure the guy bounces correctly on the east and west side
         if east:
             farmer = guy2
             guyw += guyspeed
@@ -67,33 +84,42 @@ def main():
                 east = 1
                 guydirs = guydirs- (gunh-(guyh+20)+50)/50.0
 
+        #This is the "game over" pause screen
         if guyw < 0:
+            #Put things different places for the pause screen
+            screen.blit(bg,(0,0))
             screen.blit(finished,(0,0))
+            text = endscorefont.render(" "*5+"Your final score was: "+str(int(score))+" "*40, True, (255, 255, 255), (213, 98, 0))
+            screen.blit(farmer,(guyw,guyh))
+            screen.blit(gun,(30,gunh))
+            screen.blit(text,(0,365))
             pygame.display.update()
-
             while 1:
-                clock.tick(1)
+                #Limiting the FPS in the pause screen so it uses minimal resources
+                clock.tick(5)
                 for event in pygame.event.get():
                     if event.type == KEYDOWN and event.key == K_SPACE:
                         main()
 	            if event.type == pygame.QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
                         sys.exit()
 
+        #Render all the stuff, it matters in what order they are drawed, obviously
         screen.blit(bg,(0,0))
-        text = font.render("Score:  "+str(int(score))+"   "+"Speed:  "+str(int(guyspeed)), True, (255, 255, 255), (159, 182, 205))
+        text = font.render(" Score:  "+str(int(score))+"   "+"Speed:  "+str(int(guyspeed))+" ", True, (255, 255, 255), (213, 98, 0))
         screen.blit(text, (50,10))
         screen.blit(farmer,(guyw,guyh))
         screen.blit(gun,(30,gunh))
 
-	if score < 1000:
-		guyspeed = 2*score/60
-		scorespeed = 0.02*(guyspeed/3)
-		if 2*score/60 < 4 and 0.02*(guyspeed/3) < 0.04:
-			guyspeed = 4
-			scorespeed = 0.04
-		if guyspeed >= 22:
-			guyspeed = 22
-
+        #The score algorithm or whatever
+        if score < 1000:
+            guyspeed = 2*score/60
+            scorespeed = 0.02*(guyspeed/3)
+            if 2*score/60 < 4 and 0.02*(guyspeed/3) < 0.04:
+                guyspeed = 4
+                scorespeed = 0.04
+            if guyspeed >= 22:
+                guyspeed = 22
+        #Update the new images or whatever
         pygame.display.update()
         clock.tick(90)
-main()
+if __name__ == "__main__": main()
