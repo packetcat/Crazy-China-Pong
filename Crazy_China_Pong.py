@@ -17,7 +17,7 @@
 """
 import sys, pygame, random
 from pygame.locals import *
-pygame.init() and pygame.display.set_caption('Crazy China Pong - 1.0 Beta 17')
+pygame.init() and pygame.display.set_caption('Crazy China Pong - 1.0 Beta 18')
 
 def main():
     score = 0
@@ -46,13 +46,13 @@ def main():
     #Guydirs basically is the value guyh will change each loop, it changes between positive and negative numbers
     guydirs = 0.2
     guyspeed = 4
-    gunspeed = 4
+    gunspeed = 5
     #How much the score will increase each loop
     scorespeed = 0.01
 
     bonusw = 650
     bonusactive = 0
-    bonuswithoutfasterspeed = 0
+    bonuspoints = 0
 
     font = pygame.font.Font(None, 20)
     endscorefont = pygame.font.Font(None, 40)
@@ -93,7 +93,7 @@ def main():
             #Put things different places for the pause screen
             screen.blit(bg,(0,0))
             screen.blit(finished,(0,0))
-            text = endscorefont.render(" "*2+"Your final score was: "+str(int(score))+" (Bonus: "+str(bonuswithoutfasterspeed)+")"+" "*40, True, (255, 255, 255), (213, 98, 0))
+            text = endscorefont.render(" "*2+"Your final score was: "+str(int(score))+" (Bonus: "+str(bonuspoints)+")"+" "*40, True, (255, 255, 255), (213, 98, 0))
             screen.blit(farmer,(guyw,guyh))
             screen.blit(gun,(30,gunh))
             screen.blit(text,(0,365))
@@ -106,37 +106,39 @@ def main():
                         main()
 	            if event.type == pygame.QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
                         sys.exit()
+
+        #The part that decides if there's gona be a bonus and if yes, where to put it
         randombonus = random.randint(1,500)
         if not bonusactive and randombonus == 100:
             bonush = random.choice(range(10,390,10))
             bonusactive = 1
-            print bonush
 
         #Render all the stuff, it matters in what order they are drawed, obviously
         screen.blit(bg,(0,0))
         text = font.render(" Score:  "+str(int(score))+"   "+"Speed:  "+str(int(guyspeed))+" ", True, (255, 255, 255), (213, 98, 0))
         screen.blit(text, (50,10))
 
+        #The part that does the various calculations regarding the bonus
         if bonusactive:
             screen.blit(bonus,(bonusw,bonush))
             bonusw -= 2
             if bonusw < 30 and bonush+20 > gunh and bonush < gunh+100 and bonusw > 5:
                 score += 100
-                bonuswithoutfasterspeed += 100
+                bonuspoints += 100
                 bonusactive = 0
                 bonusw = 650
-            if bonusw < 0:
+            if bonusw < -50:
                 bonusactive = 0
                 bonusw = 650
 
         screen.blit(farmer,(guyw,guyh))
         screen.blit(gun,(30,gunh))
 
-        #The score algorithm or whatever
-        if (score-bonuswithoutfasterspeed) < 1000:
-            guyspeed = 2*(score-bonuswithoutfasterspeed)/60
+        #The score algorithm or whatever, the reason "bonuspoints" is there is so the guy will not increase in speed when you get a bonus, because he shouldn't since it's a bonus not a shortcut.
+        if (score-bonuspoints) < 1000:
+            guyspeed = 2*(score-bonuspoints)/60
             scorespeed = 0.02*(guyspeed/3)
-            if 2*(score-bonuswithoutfasterspeed)/60 < 4 and 0.02*(guyspeed/3) < 0.04:
+            if 2*(score-bonuspoints)/60 < 4 and 0.02*(guyspeed/3) < 0.04:
                 guyspeed = 4
                 scorespeed = 0.04
             if guyspeed >= 22:
