@@ -5,7 +5,7 @@ python 2.x (NOTE - Python 3 users, use python2 Crazy_China_Pong.py to play)
 python-pygame.
 
 WINDOWS USERS:
-If you don't already have Python installed, get the Windows binary here (get the 32-bit even if you have 64-bit Windos) - http://www.python.org/getit/
+If you don't already have Python installed, get the Windows binary here (get the 32-bit even if you have 64-bit Windows) - http://www.python.org/getit/
 After you have installed Python, get the pygame Windows binary here - http://www.pygame.org/download.shtml
 
 Tested with python 2.6 and pygame 1.8.1
