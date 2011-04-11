@@ -19,7 +19,15 @@ import sys, pygame, random
 from pygame.locals import *
 from string import ascii_letters
 
-pygame.init() and pygame.display.set_caption('Crazy China Pong - 1.0 Beta 22')
+#This is where you edit the version stuff from now on
+version = "1.0 Beta 22"
+
+for argument in sys.argv:
+    if argument == "--version" or argument == "-v":
+        print "Crazy China Pong version "+version
+        sys.exit()
+
+pygame.init() and pygame.display.set_caption('Crazy China Pong - '+version)
 
 def highscore(player,score):
     # Outputs score to a file
@@ -37,7 +45,7 @@ def main(startup=0):
     font = pygame.font.Font(None, 20)
     endscorefont = pygame.font.Font(None, 40)
 
-    This is starting like, the thing where you write your name
+    #This is starting like, the thing where you write your name
     if startup == 2:
         write = 1
         Name = ""
