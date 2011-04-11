@@ -17,9 +17,9 @@
 """
 import sys, pygame, random
 from pygame.locals import *
-# Prompts for name of player, doesn't do anything with this data at the moment
-Name= raw_input( "Name: " )
-pygame.init() and pygame.display.set_caption('Crazy China Pong - 1.0 Beta 20')
+from string import ascii_letters
+
+pygame.init() and pygame.display.set_caption('Crazy China Pong - 1.0 Beta 22')
 
 def highscore(player,score):
     # Outputs score to a file
@@ -28,12 +28,41 @@ def highscore(player,score):
     f.close()
 
 
-def main():	
-    score = 0
+def main(startup=0):
     #clock method to control the frames per second, It's used at the bottom of main()
     clock = pygame.time.Clock()
     size = width, height = 600,400
     screen = pygame.display.set_mode(size)
+
+    font = pygame.font.Font(None, 20)
+    endscorefont = pygame.font.Font(None, 40)
+
+    This is starting like, the thing where you write your name
+    if startup == 2:
+        write = 1
+        Name = ""
+        while write:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
+                    sys.exit()
+                if event.type == KEYDOWN:
+                    if str(pygame.key.name(event.key)) in list(ascii_letters):
+                        Name += str(pygame.key.name(event.key))
+                if event.type == KEYDOWN and event.key == K_BACKSPACE:
+                    Name = Name[:-1]
+                if event.type == KEYDOWN and event.key == K_RETURN:
+                    write = 0
+            screen.fill((255,255,255))
+            namename = endscorefont.render(Name, True, (44,44,44))
+            namerequest = endscorefont.render("Write your name...", True, (213, 98, 0))
+            screen.blit(namename,(40,150))
+            screen.blit(namerequest,(40,120))
+            pygame.display.update()
+            clock.tick(20)
+
+    else:
+        Name = startup                
+    score = 0
 
     #Importing the images, converting those that can be converted because it is more efficient or whatever
     gun = pygame.image.load("data/gun.png").convert()
@@ -63,8 +92,6 @@ def main():
     bonusactive = 0
     bonuspoints = 0
 
-    font = pygame.font.Font(None, 20)
-    endscorefont = pygame.font.Font(None, 40)
     while 1:
         score += scorespeed
         for event in pygame.event.get():
@@ -113,7 +140,7 @@ def main():
                 clock.tick(5)
                 for event in pygame.event.get():
                     if event.type == KEYDOWN and event.key == K_SPACE:
-                        main()
+                        main(Name)
 	            if event.type == pygame.QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
                         sys.exit()
 
@@ -159,4 +186,4 @@ def main():
         clock.tick(90)
 
 
-if __name__ == "__main__": main()
+if __name__ == "__main__": main(2)
