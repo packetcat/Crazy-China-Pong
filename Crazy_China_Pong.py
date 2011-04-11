@@ -15,12 +15,13 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
+
 import sys, pygame, random
 from pygame.locals import *
 from string import ascii_letters
 
 #This is where you edit the version stuff from now on
-version = "1.0 Beta 22"
+version = "1.1.0"
 
 for argument in sys.argv:
     if argument == "--version" or argument == "-v":
@@ -31,7 +32,7 @@ pygame.init() and pygame.display.set_caption('Crazy China Pong - '+version)
 
 def highscore(player,score):
     # Outputs score to a file
-    with open('score.txt', 'a') as f:
+    with open('.score', 'a') as f:
         f.write(player+","+str(int(score))+"\n")
     f.close()
 
@@ -134,24 +135,57 @@ def main(startup=0):
 
         #This is the "game over" pause screen
         if guyw < 0:
-            #Put things different places for the pause screen
-            screen.blit(bg,(0,0))
-            screen.blit(finished,(0,0))
-            text = endscorefont.render(" "*2+"Your final score was: "+str(int(score))+" (Bonus: "+str(bonuspoints)+")"+" "*40, True, (255, 255, 255), (213, 98, 0))
-            screen.blit(farmer,(guyw,guyh))
-            screen.blit(gun,(30,gunh))
-            screen.blit(text,(0,365))
-            pygame.display.update()
-            highscore(Name,score)
             while 1:
+                #Put things different places for the pause screen
+                screen.blit(bg,(0,0))
+                screen.blit(finished,(0,0))
+                text = endscorefont.render(" "*2+"Your final score was: "+str(int(score))+" (Bonus: "+str(bonuspoints)+")"+" "*40, True, (255, 255, 255), (213, 98, 0))
+                screen.blit(farmer,(guyw,guyh))
+                screen.blit(gun,(30,gunh))
+                screen.blit(text,(0,365))
+                pygame.display.update()
+                highscore(Name,score)
                 #Limiting the FPS in the pause screen so it uses minimal resources
-                clock.tick(5)
+                clock.tick(10)
                 for event in pygame.event.get():
                     if event.type == KEYDOWN and event.key == K_SPACE:
                         main(Name)
-	            if event.type == pygame.QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
+                    if event.type == pygame.QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
                         sys.exit()
+                    if event.type == KEYDOWN and event.key == K_h:
+                        f = open(".score")
+                        playerscore = {}
+                        for line in f:
+                            player,score = line.split(",")
+                            playerscore[int(score)] = player
+                    
 
+                        screen.fill((255,255,255))
+                        stopten= 0
+                        heightheight = 80
+                        for i in sorted(playerscore.keys(), reverse=True):
+                            stopten += 1
+                            textplayers = endscorefont.render(playerscore[i], True, (44,44,44))
+                            screen.blit(textplayers,(100,heightheight))
+                            textscore = endscorefont.render(str(i), True, (44,44,44))
+                            screen.blit(textscore,(400,heightheight))
+                            heightheight += 30
+                            if stopten == 10:
+                                break
+                        leaderboards = endscorefont.render("Highscore!", True, (213,98,0))
+                        screen.blit(leaderboards,(220,30))
+                        enterpress = font.render("Press Enter...", True, (44,44,44))
+                        screen.blit(enterpress,(250,10))
+                        pygame.display.update()
+                        brk = 1
+                        while brk:
+                            for event in pygame.event.get():
+                                if event.type == pygame.QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
+                                    sys.exit()
+                                if event.type == KEYDOWN and event.key == K_RETURN or event.type == KEYDOWN and event.key == K_h:
+                                    brk = 0
+
+                        
         #The part that decides if there's gona be a bonus and if yes, where to put it
         randombonus = random.randint(1,500)
         if not bonusactive and randombonus == 100:
