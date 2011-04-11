@@ -37,7 +37,7 @@ def main(startup=0):
     font = pygame.font.Font(None, 20)
     endscorefont = pygame.font.Font(None, 40)
 
-    This is starting like, the thing where you write your name
+    #This is starting like, the thing where you write your name
     if startup == 2:
         write = 1
         Name = ""
