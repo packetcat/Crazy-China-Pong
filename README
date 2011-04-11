@@ -16,8 +16,9 @@ TODO:
     * Some type of powerups, I'm thinking simple but effective. 
                - Maybe simply an increase in score for catching an object with the gun. 
                - UPDATE: Kinda did this, works nicely.
-    * Prompt for player's name in game.
+    * Prompt for player's name in game not via shell.
  
 KNOWN ISSUES:
 
-	* Game does not work if launched from file manager, due to it asking for the player's name. Launch from Terminal/CMD.
+	* Game does not work if launched from file manager, due to it asking for the player's name. 
+	  Launch from Terminal/CMD.
