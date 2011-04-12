@@ -20,8 +20,8 @@ import sys, pygame, random
 from pygame.locals import *
 from string import ascii_letters
 
-#This is where you edit the version stuff from now on
-version = "1.2.1"
+#Version Control
+version = "1.2.2"
 
 for argument in sys.argv:
     if argument == "--version" or argument == "-v":
@@ -46,7 +46,7 @@ def main(startup=0):
     font = pygame.font.Font(None, 20)
     endscorefont = pygame.font.Font(None, 40)
     bonusfont = pygame.font.Font(None, 23)
-    #This is starting like, the thing where you write your name
+    #Start Screen
     if startup == 2:
         write = 1
         Name = ""
@@ -66,7 +66,7 @@ def main(startup=0):
                     write = 0
             screen.fill((255,255,255))
             namename = endscorefont.render(Name, True, (44,44,44))
-            namerequest = endscorefont.render("Write your name...", True, (213, 98, 0))
+            namerequest = endscorefont.render("Enter your name...", True, (213, 98, 0))
             screen.blit(namename,(40,150))
             screen.blit(namerequest,(40,120))
             pygame.display.update()
@@ -111,7 +111,7 @@ def main(startup=0):
                 sys.exit()
         keystate = pygame.key.get_pressed()
         if gunh > 300  or gunh < 0:
-            gunh = gunh-(4*(gunh/abs(gunh)))
+            gunh = gunh-(gunspeed*(gunh/abs(gunh)))
 
         #Controls for the gun
         if keystate[pygame.K_UP]:
@@ -136,11 +136,11 @@ def main(startup=0):
                 east = 1
                 guydirs = guydirs- (gunh-(guyh+20)+50)/50.0
 
-        #This is the "game over" pause screen
+        #Pause Screen
         if guyw < 0:
             writefile = 1
             while 1:
-                #Put things different places for the pause screen
+                #Pause screen rendering
                 screen.blit(bg,(0,0))
                 screen.blit(finished,(0,0))
                 text = endscorefont.render(" "*2+"Your final score was: "+str(int(score))+" (Bonus: "+str(bonuspoints)+")"+" "*40, True, (255, 255, 255), (213, 98, 0))
@@ -178,7 +178,7 @@ def main(startup=0):
                             heightheight += 30
                             if stopten == 10:
                                 break
-                        leaderboards = endscorefont.render("Highscore!", True, (213,98,0))
+                        leaderboards = endscorefont.render("Highscores!", True, (213,98,0))
                         screen.blit(leaderboards,(220,30))
                         enterpress = font.render("Press Enter...", True, (44,44,44))
                         screen.blit(enterpress,(250,10))
@@ -192,18 +192,18 @@ def main(startup=0):
                                     brk = 0
 
                         
-        #The part that decides if there's gona be a bonus and if yes, where to put it
-        randombonus = random.randint(1,500)
+        #Bonus
+        randombonus = random.randint(1,1000)
         if not bonusactive and randombonus == 100:
             bonush = random.choice(range(10,390,10))
             bonusactive = 1
 
-        #Render all the stuff, it matters in what order they are drawed, obviously
+        #Rendering
         screen.blit(bg,(0,0))
         text = font.render(" Score:  "+str(int(score))+"   "+"Speed:  "+str(int(guyspeed))+" ", True, (255, 255, 255), (213, 98, 0))
         screen.blit(text, (50,10))
 
-        #The part that does the various calculations regarding the bonus
+        #Bonus Calculations
         if bonusactive:
             if bonusw == 650:
                 prize = random.randint(60,140)
@@ -225,7 +225,7 @@ def main(startup=0):
         screen.blit(farmer,(guyw,guyh))
         screen.blit(gun,(30,gunh))
 
-        #The score algorithm or whatever, the reason "bonuspoints" is there is so the guy will not increase in speed when you get a bonus, because he shouldn't since it's a bonus not a shortcut.
+        #The score algorithm
         if (score-bonuspoints) < 1000:
             guyspeed = 2*(score-bonuspoints)/60
             scorespeed = 0.02*(guyspeed/3)
@@ -235,7 +235,7 @@ def main(startup=0):
             if guyspeed >= 22:
                 guyspeed = 22
 
-        #Update the new images or whatever
+        #Update Screen
         pygame.display.update()
         clock.tick(90)
 
