@@ -62,6 +62,7 @@ def main(startup=0):
                 if event.type == KEYDOWN and event.key == K_BACKSPACE:
                     Name = Name[:-1]
                 if event.type == KEYDOWN and event.key == K_RETURN:
+                    if Name == "": Name = "unknown"
                     write = 0
             screen.fill((255,255,255))
             namename = endscorefont.render(Name, True, (44,44,44))
