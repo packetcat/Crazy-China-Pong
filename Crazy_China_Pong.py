@@ -21,7 +21,7 @@ from pygame.locals import *
 from string import ascii_letters
 
 #This is where you edit the version stuff from now on
-version = "1.1.0"
+version = "1.2.1"
 
 for argument in sys.argv:
     if argument == "--version" or argument == "-v":
@@ -45,7 +45,7 @@ def main(startup=0):
 
     font = pygame.font.Font(None, 20)
     endscorefont = pygame.font.Font(None, 40)
-
+    bonusfont = pygame.font.Font(None, 23)
     #This is starting like, the thing where you write your name
     if startup == 2:
         write = 1
@@ -57,6 +57,8 @@ def main(startup=0):
                 if event.type == KEYDOWN:
                     if str(pygame.key.name(event.key)) in list(ascii_letters):
                         Name += str(pygame.key.name(event.key))
+                        if Name.count("") == 16:
+                            Name = Name[:-1]
                 if event.type == KEYDOWN and event.key == K_BACKSPACE:
                     Name = Name[:-1]
                 if event.type == KEYDOWN and event.key == K_RETURN:
@@ -135,6 +137,7 @@ def main(startup=0):
 
         #This is the "game over" pause screen
         if guyw < 0:
+            writefile = 1
             while 1:
                 #Put things different places for the pause screen
                 screen.blit(bg,(0,0))
@@ -144,7 +147,9 @@ def main(startup=0):
                 screen.blit(gun,(30,gunh))
                 screen.blit(text,(0,365))
                 pygame.display.update()
-                highscore(Name,score)
+                if writefile:
+                    highscore(Name,score)
+                    writefile = 0
                 #Limiting the FPS in the pause screen so it uses minimal resources
                 clock.tick(10)
                 for event in pygame.event.get():
@@ -199,11 +204,17 @@ def main(startup=0):
 
         #The part that does the various calculations regarding the bonus
         if bonusactive:
+            if bonusw == 650:
+                prize = random.randint(60,140)
+
+            prizething = bonusfont.render(str(prize)+"P", True, (255, 255, 255))
             screen.blit(bonus,(bonusw,bonush))
+            screen.blit(prizething,(bonusw+3,bonush))
+
             bonusw -= 2
             if bonusw < 30 and bonush+20 > gunh and bonush < gunh+100 and bonusw > 5:
-                score += 100
-                bonuspoints += 100
+                score += prize
+                bonuspoints += prize
                 bonusactive = 0
                 bonusw = 650
             if bonusw < -50:
