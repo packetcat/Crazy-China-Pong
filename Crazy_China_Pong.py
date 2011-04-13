@@ -111,7 +111,7 @@ def main(startup=0):
                 sys.exit()
         keystate = pygame.key.get_pressed()
         if gunh > 300  or gunh < 0:
-            gunh = gunh-(gunspeed*(gunh/abs(gunh)))
+            gunh = gunh-((gunspeed-1)*(gunh/abs(gunh)))
 
         #Controls for the gun
         if keystate[pygame.K_UP]:
