@@ -28,14 +28,14 @@ for argument in sys.argv:
         print "Crazy China Pong version "+version
         sys.exit()
     if argument == "--credits":
-	print "Crazy China Pong "+version+" Credits:"+"\n"+"\n"+\
-		"Original Idea     : SmartViking"+"\n"+"\n"+\
-		"Github Account    : Staticsafe"+"\n"+"\n"+\
-		"Coding            : SmartViking"+"\n"+"                Staticsafe"+"\n"+"                Robert Maehl"+"\n"+"\n"+\
-		"Debug             : SmartViking"+"\n"+"                Staticsafe"+"\n"+"                Robert Maehl"+"\n"+"\n"+\
-		"Credits System    : Robert Maehl"+"\n"+"\n"+\
-		"Sys Resource Mgmt : Robert Maehl"
-	sys.exit()
+    print "Crazy China Pong "+version+" Credits:\n\n"+\
+        "Original Idea     : SmartViking\n"+\
+        "Github Account    : Staticsafe\n\n"+\
+        "Coding            : SmartViking\n"+" "*20+"Staticsafe\n"+" "*20+"Robert Maehl\n\n"+\
+        "Debug             : SmartViking\n"+" "*20+"Staticsafe\n"+" "*20+"Robert Maehl\n\n"+\
+        "Credits System    : Robert Maehl\n\n"+\
+        "Sys Resource Mgmt : Robert Maehl"
+        sys.exit()
 
 pygame.init() and pygame.display.set_caption('Crazy China Pong - '+version)
 
@@ -124,9 +124,9 @@ def main(startup=0):
 
         #Controls
         if keystate[pygame.K_UP]:
-		gunh -= gunspeed
+        gunh -= gunspeed
         if keystate[pygame.K_DOWN]:
-		gunh += gunspeed
+        gunh += gunspeed
         #Vertical Bounce
         if guyh < -10 or guyh > 370:
             guydirs = guydirs - (guydirs*2)
@@ -250,3 +250,4 @@ def main(startup=0):
 
 
 if __name__ == "__main__": main(2)
+#   lala
