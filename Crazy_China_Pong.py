@@ -21,7 +21,7 @@ from pygame.locals import *
 from string import ascii_letters
 
 #Version Control
-version = "1.2.4"
+version = "1.2.5"
 
 for argument in sys.argv:
     if argument == "--version" or argument == "-v":
