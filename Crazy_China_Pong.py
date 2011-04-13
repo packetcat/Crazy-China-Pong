@@ -21,12 +21,21 @@ from pygame.locals import *
 from string import ascii_letters
 
 #Version Control
-version = "1.2.2"
+version = "1.2.4"
 
 for argument in sys.argv:
     if argument == "--version" or argument == "-v":
         print "Crazy China Pong version "+version
         sys.exit()
+    if argument == "--credits":
+	print "Crazy China Pong "+version+" Credits:"+"\n"+"\n"+\
+		"Original Idea     : SmartViking"+"\n"+"\n"+\
+		"Github Account    : Staticsafe"+"\n"+"\n"+\
+		"Coding            : SmartViking"+"\n"+"                Staticsafe"+"\n"+"                Robert Maehl"+"\n"+"\n"+\
+		"Debug             : SmartViking"+"\n"+"                Staticsafe"+"\n"+"                Robert Maehl"+"\n"+"\n"+\
+		"Credits System    : Robert Maehl"+"\n"+"\n"+\
+		"Sys Resource Mgmt : Robert Maehl"
+	sys.exit()
 
 pygame.init() and pygame.display.set_caption('Crazy China Pong - '+version)
 
@@ -38,7 +47,7 @@ def highscore(player,score):
 
 
 def main(startup=0):
-    #clock method to control the frames per second, It's used at the bottom of main()
+    #FPS Clock Method used for Main()
     clock = pygame.time.Clock()
     size = width, height = 600,400
     screen = pygame.display.set_mode(size)
@@ -76,28 +85,28 @@ def main(startup=0):
         Name = startup                
     score = 0
 
-    #Importing the images, converting those that can be converted because it is more efficient or whatever
+    #Image Importation
     gun = pygame.image.load("data/gun.png").convert()
     bg = pygame.image.load("data/bg.png").convert()
     guy = pygame.image.load("data/guy.png")
     guy2 = pygame.image.load("data/guy2.png")
     finished = pygame.image.load("data/finished.png")
     bonus = pygame.image.load("data/bonus_score.png")
-    #Farmer is the variable that decides which way the guy is pointing, it's changed each time it hits the gun and the other side of the window
+    #Farmer Image Direction
     farmer = guy2
-    #The height of the gun
+    #Gun height
     gunh = 125.5
-    #The height and width of the guy
+    #Farmer height and width
     guyh = 200
     guyw = 280
-    #Variable which decides if the farmer/guy is turning east or west
+    #Farmer Direction Variable
     east = 1
 
-    #Guydirs basically is the value guyh will change each loop, it changes between positive and negative numbers
+    #+/- Value guyh per loop
     guydirs = 0.2
     guyspeed = 4
     gunspeed = 5
-    #How much the score will increase each loop
+    #Score
     scorespeed = 0.01
 
     bonusw = 650
@@ -113,17 +122,17 @@ def main(startup=0):
         if gunh > 300  or gunh < 0:
             gunh = gunh-((gunspeed-1)*(gunh/abs(gunh)))
 
-        #Controls for the gun
+        #Controls
         if keystate[pygame.K_UP]:
 		gunh -= gunspeed
         if keystate[pygame.K_DOWN]:
 		gunh += gunspeed
-        #This part makes sure that the guy bounces in the other direction when he hits the top or the bottom
+        #Vertical Bounce
         if guyh < -10 or guyh > 370:
             guydirs = guydirs - (guydirs*2)
         guyh = guyh + guydirs
 
-        #This part makes sure the guy bounces correctly on the east and west side
+        #Horizontal Bounce
         if east:
             farmer = guy2
             guyw += guyspeed
@@ -151,7 +160,7 @@ def main(startup=0):
                 if writefile:
                     highscore(Name,score)
                     writefile = 0
-                #Limiting the FPS in the pause screen so it uses minimal resources
+                #FPS and Resource limiting
                 clock.tick(10)
                 for event in pygame.event.get():
                     if event.type == KEYDOWN and event.key == K_SPACE:
