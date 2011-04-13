@@ -12,14 +12,8 @@ Tested with python 2.6 and pygame 1.8.1
 Does NOT work with Python 3.
 
 TODO:
-    * A highscore, have a file which stores the scores and maybe have some default ones. UPDATE - This is now done.
     * Some type of powerups, I'm thinking simple but effective. 
-               - Maybe simply an increase in score for catching an object with the gun. 
-               - UPDATE: Kinda did this, works nicely.
-    * Prompt for player's name in game not via shell.
-               - UPDATE: Done.
+    * Fix increasing RAM usage with each new game
  
 KNOWN ISSUES:
-
-	* Game does not work if launched from file manager, due to it asking for the player's name. 
-	  Launch from Terminal/CMD. UPDATE: Fixed or something.
+    * RAM can get as high as 200+ MB by game 100
