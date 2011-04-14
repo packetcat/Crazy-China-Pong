@@ -21,7 +21,7 @@ from pygame.locals import *
 from string import ascii_letters
 
 #Version Control
-version = "1.2.4"
+version = "1.2.5"
 
 for argument in sys.argv:
     if argument == "--version" or argument == "-v":
@@ -92,6 +92,7 @@ def main(startup=0):
     guy2 = pygame.image.load("data/guy2.png")
     finished = pygame.image.load("data/finished.png")
     bonus = pygame.image.load("data/bonus_score.png")
+    badbonus = pygame.image.load("data/bad_score.png")
     #Farmer Image Direction
     farmer = guy2
     #Gun height
@@ -109,10 +110,11 @@ def main(startup=0):
     #Score
     scorespeed = 0.01
 
+    badbonusw = 650
     bonusw = 650
     bonusactive = 0
     bonuspoints = 0
-
+    badbonusactive = 0
     while 1:
         score += scorespeed
         for event in pygame.event.get():
@@ -173,7 +175,7 @@ def main(startup=0):
                         for line in f:
                             player,score = line.split(",")
                             playerscore[int(score)] = player
-                    
+                        f.close
 
                         screen.fill((255,255,255))
                         stopten= 0
@@ -202,11 +204,15 @@ def main(startup=0):
 
                         
         #Bonus
-        randombonus = random.randint(1,1000)
-        if not bonusactive and randombonus == 100:
+        randombonus = random.randint(1,500)
+        if not bonusactive and randombonus == 99:
             bonush = random.choice(range(10,390,10))
             bonusactive = 1
-
+        #Bad bonus
+        randombadbonus = random.randint(1,1000)
+        if not badbonusactive and randombadbonus == 199:
+            badbonush = random.choice(range(5,385,10))
+            badbonusactive = 1
         #Rendering
         screen.blit(bg,(0,0))
         text = font.render(" Score:  "+str(int(score))+"   "+"Speed:  "+str(int(guyspeed))+" ", True, (255, 255, 255), (213, 98, 0))
@@ -231,6 +237,23 @@ def main(startup=0):
                 bonusactive = 0
                 bonusw = 650
 
+        if badbonusactive:
+            if badbonusw == 650:
+                badprize = random.randint(-99,-30)
+
+            badprizething = bonusfont.render(str(badprize)+"P", True, (255, 255, 255))
+            screen.blit(badbonus,(badbonusw,badbonush))
+            screen.blit(badprizething,(badbonusw+3,badbonush))
+
+            badbonusw -= 3
+            if badbonusw < 30 and badbonush+20 > gunh and badbonush < gunh+100 and badbonusw > 5:
+                score += badprize
+                bonuspoints += badprize
+                badbonusactive = 0
+                badbonusw = 650
+            if badbonusw < -50:
+                badbonusactive = 0
+                badbonusw = 650
         screen.blit(farmer,(guyw,guyh))
         screen.blit(gun,(30,gunh))
 
