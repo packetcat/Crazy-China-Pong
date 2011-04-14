@@ -16,7 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-import sys, pygame, random
+import sys, pygame, random, getpass
 from pygame.locals import *
 from string import ascii_letters
 
@@ -29,7 +29,7 @@ for argument in sys.argv:
         sys.exit()
     if argument == "--credits":
         print "Crazy China Pong "+version+" Credits:\n\n"+\
-            "Original Idea     : SmartViking\n"+\
+            "Original Idea     : SmartViking\n\n"+\
             "Github Account    : Staticsafe\n\n"+\
             "Coding            : SmartViking\n"+" "*20+"Staticsafe\n"+" "*20+"Robert Maehl\n\n"+\
             "Debug             : SmartViking\n"+" "*20+"Staticsafe\n"+" "*20+"Robert Maehl\n\n"+\
@@ -40,7 +40,7 @@ for argument in sys.argv:
 pygame.init() and pygame.display.set_caption('Crazy China Pong - '+version)
 
 def highscore(player,score):
-    # Outputs score to a file
+    #Score output
     with open('.score', 'a') as f:
         f.write(player+","+str(int(score))+"\n")
     f.close()
@@ -58,7 +58,7 @@ def main(startup=0):
     #Start Screen
     if startup == 2:
         write = 1
-        Name = ""
+        Name = getpass.getuser()
         while write:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
@@ -71,7 +71,7 @@ def main(startup=0):
                 if event.type == KEYDOWN and event.key == K_BACKSPACE:
                     Name = Name[:-1]
                 if event.type == KEYDOWN and event.key == K_RETURN:
-                    if Name == "": Name = "unknown"
+                    if Name == "": Name = getpass.getuser()
                     write = 0
             screen.fill((255,255,255))
             namename = endscorefont.render(Name, True, (44,44,44))
