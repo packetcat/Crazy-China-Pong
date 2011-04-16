@@ -8,6 +8,8 @@ WINDOWS USERS:
 If you don't already have Python installed, get the Windows binary here (get the 32-bit even if you have 64-bit Windows) - http://www.python.org/getit/
 After you have installed Python, get the pygame Windows binary here - http://www.pygame.org/download.shtml
 
+Windows and Mac users: I'm not really sure if the game works with mac and windows, if you use it and you have tried to play the game, let us know if it worked, or if it didn't and what the problem was and we would be grateful. :)
+
 Tested with python 2.6 and pygame 1.8.1
 Does NOT work with Python 3.
 
