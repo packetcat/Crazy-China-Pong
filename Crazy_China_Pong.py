@@ -116,6 +116,9 @@ def main(startup=0):
     bonuspoints = 0
     badbonusactive = 0
     while 1:
+
+        previousgh = gunh
+
         score += scorespeed
         for event in pygame.event.get():
             if event.type == pygame.QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
@@ -146,6 +149,10 @@ def main(startup=0):
             if guyw < 31 and guyh > gunh-40 and guyh < gunh+100 and guyw > 8:
                 east = 1
                 guydirs = guydirs- (gunh-(guyh+20)+50)/50.0
+                if previousgh > gunh:
+                    guydirs -= 0.6
+                elif previousgh < gunh:
+                    guydirs += 0.6
 
         #Pause Screen
         if guyw < 0:
@@ -258,7 +265,7 @@ def main(startup=0):
         screen.blit(gun,(30,gunh))
 
         #The score algorithm
-        if (score-bonuspoints) < 1000:
+        if (score-bonuspoints) < 5000:
             guyspeed = 2*(score-bonuspoints)/60
             scorespeed = 0.02*(guyspeed/3)
             if 2*(score-bonuspoints)/60 < 4 and 0.02*(guyspeed/3) < 0.04:
