@@ -21,7 +21,7 @@ from pygame.locals import *
 from string import ascii_letters
 
 #Version Control
-version = "1.2.9"
+version = "1.3.0"
 
 for argument in sys.argv:
     if argument == "--version" or argument == "-v":
@@ -219,7 +219,7 @@ def main(startup=0):
                                     brk = 0
 
 
-        #freeze ball
+        #Freeze ball
         randomball = random.randint(1,2000)
         if not balls and not freeze and randomball == 399:
             ballw = random.choice(range(100,550,50))
@@ -256,9 +256,9 @@ def main(startup=0):
             if bonusw == 650:
                 prize = random.randint(60,140)
 
-            prizething = bonusfont.render(str(prize)+"P", True, (255, 255, 255))
+            prizething = bonusfont.render(str(prize)+" P", True, (255, 255, 255))
             screen.blit(bonus,(bonusw,bonush))
-            screen.blit(prizething,(bonusw+3,bonush))
+            screen.blit(prizething,(bonusw+2,bonush+2))
 
             bonusw -= 2
             if bonusw < 30 and bonush+20 > gunh and bonush < gunh+100 and bonusw > 5:
@@ -274,9 +274,9 @@ def main(startup=0):
             if badbonusw == 650:
                 badprize = random.randint(-99,-30)
 
-            badprizething = bonusfont.render(str(badprize)+"P", True, (255, 255, 255))
+            badprizething = bonusfont.render(str(badprize)+" P", True, (255, 255, 255))
             screen.blit(badbonus,(badbonusw,badbonush))
-            screen.blit(badprizething,(badbonusw+3,badbonush))
+            screen.blit(badprizething,(badbonusw+2,badbonush+2))
 
             badbonusw -= 3
             if badbonusw < 30 and badbonush+20 > gunh and badbonush < gunh+100 and badbonusw > 5:
