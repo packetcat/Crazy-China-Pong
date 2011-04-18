@@ -317,7 +317,5 @@ def main(startup=0):
         #Update Screen
         pygame.display.update()
         clock.tick(gamespeed)
-        print scorespeed
 
 if __name__ == "__main__": main(2)
-#   lala
