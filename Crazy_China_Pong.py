@@ -93,6 +93,9 @@ def main(startup=0):
     finished = pygame.image.load("data/finished.png")
     bonus = pygame.image.load("data/bonus_score.png")
     badbonus = pygame.image.load("data/bad_score.png")
+    bgfreeze = pygame.image.load("data/bgfreeze.png")
+    freezeball = pygame.image.load("data/freeze.png")
+
     #Farmer Image Direction
     farmer = guy2
     #Gun height
@@ -115,8 +118,14 @@ def main(startup=0):
     bonusactive = 0
     bonuspoints = 0
     badbonusactive = 0
-    while 1:
+    gamespeed = 90
 
+    balls = 0
+    ballw = 0
+    ballh = -50
+    freeze = 0
+    wutevr = 0
+    while 1:
         previousgh = gunh
 
         score += scorespeed
@@ -161,7 +170,7 @@ def main(startup=0):
                 #Pause screen rendering
                 screen.blit(bg,(0,0))
                 screen.blit(finished,(0,0))
-                text = endscorefont.render(" "*2+"Your final score was: "+str(int(score))+" (Bonus: "+str(bonuspoints)+")"+" "*40, True, (255, 255, 255), (213, 98, 0))
+                text = endscorefont.render(" "*4+"Your final score was: "+str(int(score))+" "*40, True, (255, 255, 255), (213, 98, 0))
                 screen.blit(farmer,(guyw,guyh))
                 screen.blit(gun,(30,gunh))
                 screen.blit(text,(0,365))
@@ -209,7 +218,12 @@ def main(startup=0):
                                 if event.type == KEYDOWN and event.key == K_RETURN or event.type == KEYDOWN and event.key == K_h:
                                     brk = 0
 
-                        
+
+        #freeze ball
+        randomball = random.randint(1,2000)
+        if not balls and not freeze and randomball == 399:
+            ballw = random.choice(range(100,550,50))
+            balls = 1
         #Bonus
         randombonus = random.randint(1,500)
         if not bonusactive and randombonus == 99:
@@ -224,6 +238,18 @@ def main(startup=0):
         screen.blit(bg,(0,0))
         text = font.render(" Score:  "+str(int(score))+"   "+"Speed:  "+str(int(guyspeed))+" ", True, (255, 255, 255), (213, 98, 0))
         screen.blit(text, (50,10))
+
+
+        if balls:
+            screen.blit(freezeball,(ballw,ballh))
+            ballh += 1
+            if ballw < guyw+40 and ballw+40 > guyw and ballh+40 > guyh and ballh < guyh+40:
+                ballh = -50
+                freeze = 1
+                balls = 0
+            if ballh > 405:
+                ballh = -50
+                balls = 0
 
         #Bonus Calculations
         if bonusactive:
@@ -264,6 +290,20 @@ def main(startup=0):
         screen.blit(farmer,(guyw,guyh))
         screen.blit(gun,(30,gunh))
 
+        if freeze:
+            gunspeed = 6
+            score += 0.5
+            bonuspoints += 0.5
+            gamespeed = 60
+            screen.blit(bgfreeze,(0,0))
+            wutevr += 1
+            if wutevr > 600:
+                freeze = 0
+                gamespeed = 90
+                wutevr = 0
+                gunspeed = 5
+                scorespeed -= 0.03
+
         #The score algorithm
         if (score-bonuspoints) < 5000:
             guyspeed = 2*(score-bonuspoints)/60
@@ -276,8 +316,8 @@ def main(startup=0):
 
         #Update Screen
         pygame.display.update()
-        clock.tick(90)
-
+        clock.tick(gamespeed)
+        print scorespeed
 
 if __name__ == "__main__": main(2)
 #   lala
