@@ -21,7 +21,7 @@ from pygame.locals import *
 from string import ascii_letters
 
 #Version Control
-version = "1.3.0"
+version = "1.2.9"
 
 for argument in sys.argv:
     if argument == "--version" or argument == "-v":
@@ -52,9 +52,9 @@ def main(startup=0):
     size = width, height = 600,400
     screen = pygame.display.set_mode(size)
 
-    font = pygame.font.Font(None, 20)
-    endscorefont = pygame.font.Font(None, 40)
-    bonusfont = pygame.font.Font(None, 23)
+    font = pygame.font.Font("data/VeraBd.ttf", 12)
+    endscorefont = pygame.font.Font("data/VeraBd.ttf", 30)
+    bonusfont = pygame.font.Font("data/VeraBd.ttf", 17)
     #Start Screen
     if startup == 2:
         write = 1
@@ -199,14 +199,17 @@ def main(startup=0):
                         for i in sorted(playerscore.keys(), reverse=True):
                             stopten += 1
                             textplayers = endscorefont.render(playerscore[i], True, (44,44,44))
-                            screen.blit(textplayers,(100,heightheight))
+                            screen.blit(textplayers,(50,heightheight))
                             textscore = endscorefont.render(str(i), True, (44,44,44))
-                            screen.blit(textscore,(400,heightheight))
+                            r = textscore.get_rect(center=(100,100))
+                            r.right = 550
+                            r.y = heightheight
+                            screen.blit(textscore,r)
                             heightheight += 30
                             if stopten == 10:
                                 break
                         leaderboards = endscorefont.render("Highscores!", True, (213,98,0))
-                        screen.blit(leaderboards,(220,30))
+                        screen.blit(leaderboards,(200,30))
                         enterpress = font.render("Press Enter...", True, (44,44,44))
                         screen.blit(enterpress,(250,10))
                         pygame.display.update()
@@ -254,11 +257,11 @@ def main(startup=0):
         #Bonus Calculations
         if bonusactive:
             if bonusw == 650:
-                prize = random.randint(60,140)
+                prize = random.randint(100,180)
 
-            prizething = bonusfont.render(str(prize)+" P", True, (255, 255, 255))
+            prizething = bonusfont.render(str(prize), True, (255, 255, 255))
             screen.blit(bonus,(bonusw,bonush))
-            screen.blit(prizething,(bonusw+2,bonush+2))
+            screen.blit(prizething,(bonusw+1,bonush-1))
 
             bonusw -= 2
             if bonusw < 30 and bonush+20 > gunh and bonush < gunh+100 and bonusw > 5:
@@ -274,9 +277,9 @@ def main(startup=0):
             if badbonusw == 650:
                 badprize = random.randint(-99,-30)
 
-            badprizething = bonusfont.render(str(badprize)+" P", True, (255, 255, 255))
-            screen.blit(badbonus,(badbonusw,badbonush))
-            screen.blit(badprizething,(badbonusw+2,badbonush+2))
+            badprizething = bonusfont.render(str(badprize), True, (255, 255, 255))
+            screen.blit(badbonus,(badbonusw+1,badbonush-1))
+            screen.blit(badprizething,(badbonusw+1,badbonush-1))
 
             badbonusw -= 3
             if badbonusw < 30 and badbonush+20 > gunh and badbonush < gunh+100 and badbonusw > 5:
