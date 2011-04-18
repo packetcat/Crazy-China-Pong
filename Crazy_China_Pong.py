@@ -150,9 +150,9 @@ def main(startup=0):
                 east = 1
                 guydirs = guydirs- (gunh-(guyh+20)+50)/50.0
                 if previousgh > gunh:
-                    guydirs -= 1.6
+                    guydirs -= 0.8
                 elif previousgh < gunh:
-                    guydirs += 1.6
+                    guydirs += 0.8
 
         #Pause Screen
         if guyw < 0:
