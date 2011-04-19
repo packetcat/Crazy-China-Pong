@@ -16,12 +16,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-import sys, pygame, random, getpass
+import sys, pygame, random, getpass, os.path
 from pygame.locals import *
 from string import ascii_letters
 
 #Version Control
-version = "1.3.1"
+version = "1.3.3"
 
 for argument in sys.argv:
     if argument == "--version" or argument == "-v":
@@ -36,6 +36,11 @@ for argument in sys.argv:
             "Credits System    : Robert Maehl\n\n"+\
             "Sys Resource Mgmt : Robert Maehl"
         sys.exit()
+    if argument == "--debug" or argument == "-d":
+	if os.path.exists(".debug") == True:
+            os.remove('.debug')
+        else:
+	    open('.debug', 'w').close()
 
 pygame.init() and pygame.display.set_caption('Crazy China Pong - '+version)
 
@@ -51,6 +56,7 @@ def main(startup=0):
     clock = pygame.time.Clock()
     size = width, height = 600,400
     screen = pygame.display.set_mode(size)
+    debug = os.path.exists(".debug")
 
     font = pygame.font.Font("data/FreeMonoBold.ttf", 12)
     endscorefont = pygame.font.Font("data/FreeMonoBold.ttf", 30)
@@ -108,7 +114,10 @@ def main(startup=0):
 
     #+/- Value guyh per loop
     guydirs = 0.2
-    guyspeed = 4
+    if debug == True:
+	guyspeed = 1
+    else:
+        guyspeed = 4
     gunspeed = 5
     #Score
     scorespeed = 0.01
@@ -311,10 +320,16 @@ def main(startup=0):
 	if score < 0:
 		score = 0
         if (score-bonuspoints) < 5000:
-            guyspeed = 2*(score-bonuspoints)/60
+	    if debug == True:
+	        guyspeed = 1
+            else:
+                guyspeed = 2*(score-bonuspoints)/60
             scorespeed = 0.02*(guyspeed/3)
             if 2*(score-bonuspoints)/60 < 4 and 0.02*(guyspeed/3) < 0.04:
-                guyspeed = 4
+	        if debug == True:
+	            guyspeed = 1
+                else:
+                    guyspeed = 4
                 scorespeed = 0.04
             if guyspeed >= 22:
                 guyspeed = 22
