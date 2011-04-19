@@ -52,9 +52,9 @@ def main(startup=0):
     size = width, height = 600,400
     screen = pygame.display.set_mode(size)
 
-    font = pygame.font.Font("data/VeraBd.ttf", 12)
-    endscorefont = pygame.font.Font("data/VeraBd.ttf", 30)
-    bonusfont = pygame.font.Font("data/VeraBd.ttf", 17)
+    font = pygame.font.Font("data/FreeMonoBold.ttf", 12)
+    endscorefont = pygame.font.Font("data/FreeMonoBold.ttf", 30)
+    bonusfont = pygame.font.Font("data/FreeMonoBold.ttf", 17)
     #Start Screen
     if startup == 2:
         write = 1
@@ -261,7 +261,7 @@ def main(startup=0):
 
             prizething = bonusfont.render(str(prize), True, (255, 255, 255))
             screen.blit(bonus,(bonusw,bonush))
-            screen.blit(prizething,(bonusw+1,bonush-1))
+            screen.blit(prizething,(bonusw+4,bonush))
 
             bonusw -= 2
             if bonusw < 30 and bonush+20 > gunh and bonush < gunh+100 and bonusw > 5:
@@ -279,7 +279,7 @@ def main(startup=0):
 
             badprizething = bonusfont.render(str(badprize), True, (255, 255, 255))
             screen.blit(badbonus,(badbonusw+1,badbonush-1))
-            screen.blit(badprizething,(badbonusw+1,badbonush-1))
+            screen.blit(badprizething,(badbonusw+5,badbonush))
 
             badbonusw -= 3
             if badbonusw < 30 and badbonush+20 > gunh and badbonush < gunh+100 and badbonusw > 5:
@@ -308,6 +308,8 @@ def main(startup=0):
                 scorespeed -= 0.03
 
         #The score algorithm
+	if score < 0:
+		score = 0
         if (score-bonuspoints) < 5000:
             guyspeed = 2*(score-bonuspoints)/60
             scorespeed = 0.02*(guyspeed/3)
