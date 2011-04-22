@@ -16,7 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-import sys, pygame, random, getpass, os.path
+import sys, pygame, random, getpass, os.path, time
 from pygame.locals import *
 from string import ascii_letters
 
@@ -25,19 +25,21 @@ version = "1.3.3"
 
 for argument in sys.argv:
     if argument == "--version" or argument == "-v":
-        print "Crazy China Pong version "+version
-        sys.exit()
+        print "\nCrazy China Pong version "+version
+        if argument == sys.argv[-1]:
+            sys.exit()
+        else:
+            pass
     if argument == "--credits":
         print "Crazy China Pong "+version+" Credits:\n\n"+\
-            "Original Idea     : SmartViking\n\n"+\
-            "Github Account    : Staticsafe\n\n"+\
             "Coding            : SmartViking\n"+" "*20+"Staticsafe\n"+" "*20+"Robert Maehl\n\n"+\
-            "Debug             : SmartViking\n"+" "*20+"Staticsafe\n"+" "*20+"Robert Maehl\n\n"+\
-            "Credits System    : Robert Maehl\n\n"+\
-            "Sys Resource Mgmt : Robert Maehl"
-        sys.exit()
+            "Artwork(whatever) : SmartViking"
+        if argument == sys.argv[-1]:
+            sys.exit()
+        else:
+            pass
     if argument == "--debug" or argument == "-d":
-	if os.path.exists(".debug") == True:
+        if os.path.exists(".debug") == True:
             os.remove('.debug')
         else:
 	    open('.debug', 'w').close()
@@ -61,6 +63,18 @@ def main(startup=0):
     font = pygame.font.Font("data/FreeMonoBold.ttf", 12)
     endscorefont = pygame.font.Font("data/FreeMonoBold.ttf", 30)
     bonusfont = pygame.font.Font("data/FreeMonoBold.ttf", 17)
+
+    #Image Importation
+    gun = pygame.image.load("data/gun.png").convert()
+    bg = pygame.image.load("data/bg.png").convert()
+    guy = pygame.image.load("data/guy.png")
+    guy2 = pygame.image.load("data/guy2.png")
+    finished = pygame.image.load("data/finished.png")
+    bonus = pygame.image.load("data/bonus_score.png")
+    badbonus = pygame.image.load("data/bad_score.png")
+    bgfreeze = pygame.image.load("data/bgfreeze.png")
+    freezeball = pygame.image.load("data/freeze.png")
+
     #Start Screen
     if startup == 2:
         write = 1
@@ -79,7 +93,7 @@ def main(startup=0):
                 if event.type == KEYDOWN and event.key == K_RETURN:
                     if Name == "": Name = getpass.getuser()
                     write = 0
-            screen.fill((255,255,255))
+            screen.blit(bg,(0,0))
             namename = endscorefont.render(Name, True, (44,44,44))
             namerequest = endscorefont.render("Enter your name...", True, (213, 98, 0))
             screen.blit(namename,(40,150))
@@ -91,16 +105,58 @@ def main(startup=0):
         Name = startup                
     score = 0
 
-    #Image Importation
-    gun = pygame.image.load("data/gun.png").convert()
-    bg = pygame.image.load("data/bg.png").convert()
-    guy = pygame.image.load("data/guy.png")
-    guy2 = pygame.image.load("data/guy2.png")
-    finished = pygame.image.load("data/finished.png")
-    bonus = pygame.image.load("data/bonus_score.png")
-    badbonus = pygame.image.load("data/bad_score.png")
-    bgfreeze = pygame.image.load("data/bgfreeze.png")
-    freezeball = pygame.image.load("data/freeze.png")
+    if startup == 2:
+        vgunh = -100
+        video = 1
+        some_thing = 0
+        vbonusw = 650
+        vbbonusw = 650
+        goodw = 700
+        badw = 700
+        while video:
+            some_thing += 1
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
+                    sys.exit()
+                if event.type == KEYDOWN and event.key == K_RETURN:
+                    video = 0
+            screen.blit(bg,(0,0))
+            if some_thing < 400:
+                vgunh += 1.2
+            if some_thing < 125:
+                vbonusw -= 5
+                vprizething = bonusfont.render("123", True, (255, 255, 255))
+                good = endscorefont.render("This is good.", True, (44,44,99))
+                screen.blit(good, (goodw,140))
+                screen.blit(bonus,(vbonusw,100))
+                screen.blit(vprizething,(vbonusw+4,100))
+                if some_thing < 80:
+                    goodw -= 7
+                elif some_thing > 80:
+                    goodw += 10
+                else:
+                    time.sleep(0.5)
+            if some_thing > 130 and some_thing < 300:
+                vbbonusw -= 6
+                vbadprizething = bonusfont.render("-42", True, (255, 255, 255))
+                bad = endscorefont.render("This is bad.", True, (222,54,19))
+                screen.blit(bad, (badw,230))
+                screen.blit(badbonus,(vbbonusw,180))
+                screen.blit(vbadprizething,(vbbonusw+4,180))
+                if some_thing < 200:
+                    badw -= 8
+                elif some_thing > 200:
+                    badw += 10
+                else:
+                    time.sleep(0.5)
+                if some_thing > 200 and some_thing < 235:
+                    vgunh -= 4
+                if some_thing > 235 and some_thing < 260:
+                    vgunh -= 1.2
+            screen.blit(gun,(30,vgunh))
+            pygame.display.update()
+            clock.tick(50)
+            print some_thing
 
     #Farmer Image Direction
     farmer = guy2
@@ -182,7 +238,7 @@ def main(startup=0):
                 text = endscorefont.render(" "*4+"Your final score was: "+str(int(score))+" "*40, True, (255, 255, 255), (213, 98, 0))
                 screen.blit(farmer,(guyw,guyh))
                 screen.blit(gun,(30,gunh))
-                screen.blit(text,(0,365))
+                screen.blit(text,(0,369))
                 pygame.display.update()
                 if writefile:
                     highscore(Name,score)
@@ -202,9 +258,12 @@ def main(startup=0):
                             playerscore[int(score)] = player
                         f.close
 
-                        screen.fill((255,255,255))
+                        #screen.fill((255,255,255))
+                        screen.blit(bg,(0,0))
+                        screen.blit(farmer,(guyw,guyh))
+                        screen.blit(gun,(30,gunh))
                         stopten= 0
-                        heightheight = 80
+                        heightheight = 60
                         for i in sorted(playerscore.keys(), reverse=True):
                             stopten += 1
                             textplayers = endscorefont.render(playerscore[i], True, (44,44,44))
@@ -221,6 +280,8 @@ def main(startup=0):
                         screen.blit(leaderboards,(200,30))
                         enterpress = font.render("Press Enter...", True, (44,44,44))
                         screen.blit(enterpress,(250,10))
+                        screen.blit(text,(0,369))
+
                         pygame.display.update()
                         brk = 1
                         while brk:
@@ -248,7 +309,7 @@ def main(startup=0):
             badbonusactive = 1
         #Rendering
         screen.blit(bg,(0,0))
-        text = font.render(" Score:  "+str(int(score))+"   "+"Speed:  "+str(int(guyspeed))+" ", True, (255, 255, 255), (213, 98, 0))
+        text = font.render(" Score: "+str(int(score))+"  "+"Speed: "+str(int(guyspeed))+" ", True, (255, 255, 255), (213, 98, 0))
         screen.blit(text, (50,10))
 
 
