@@ -21,7 +21,8 @@ from pygame.locals import *
 from string import ascii_letters
 
 #Version Control
-version = "1.3.3"
+version = "1.3.4"
+debug = ""
 
 for argument in sys.argv:
     if argument == "--version" or argument == "-v":
@@ -34,22 +35,21 @@ for argument in sys.argv:
             "Coding            : SmartViking\n"+" "*20+"Staticsafe\n"+" "*20+"Robert Maehl\n\n"+\
             "Debug             : SmartViking\n"+" "*20+"Staticsafe\n"+" "*20+"Robert Maehl\n\n"+\
             "Credits System    : Robert Maehl\n\n"+\
-            "Sys Resource Mgmt : Robert Maehl"
-        sys.exit()
+            "Sys Resource Mgmt : Robert Maehl" and sys.exit()
     if argument == "--debug" or argument == "-d":
+	open('.debug', 'w').close()
+	debug = " - Debug"
+    if argument == "--bug" or argument == "-b":
 	if os.path.exists(".debug") == True:
             os.remove('.debug')
-        else:
-	    open('.debug', 'w').close()
-
-pygame.init() and pygame.display.set_caption('Crazy China Pong - '+version)
+	sys.exit()
+pygame.init() and pygame.display.set_caption('Crazy China Pong - '+version+debug)
 
 def highscore(player,score):
     #Score output
     with open('.score', 'a') as f:
         f.write(player+","+str(int(score))+"\n")
     f.close()
-
 
 def main(startup=0):
     #FPS Clock Method used for Main()
@@ -86,7 +86,6 @@ def main(startup=0):
             screen.blit(namerequest,(40,120))
             pygame.display.update()
             clock.tick(20)
-
     else:
         Name = startup                
     score = 0
@@ -115,7 +114,7 @@ def main(startup=0):
     #+/- Value guyh per loop
     guydirs = 0.2
     if debug == True:
-	guyspeed = 1
+	guyspeed = 0
     else:
         guyspeed = 4
     gunspeed = 5
@@ -133,7 +132,7 @@ def main(startup=0):
     ballw = 0
     ballh = -50
     freeze = 0
-    wutevr = 0
+    freezecycle = 0
     while 1:
         previousgh = gunh
 
@@ -146,24 +145,48 @@ def main(startup=0):
             gunh = gunh-((gunspeed-1)*(gunh/abs(gunh)))
 
         #Controls
-        if keystate[pygame.K_UP]:
-            gunh -= gunspeed
-        if keystate[pygame.K_DOWN]:
-            gunh += gunspeed
+	if debug == True:
+	    if keystate[115]:
+		gunh += gunspeed
+	    if keystate[119]:
+		gunh -= gunspeed
+	    if keystate[pygame.K_UP]:
+		guyh = guyh - 4
+	    if keystate[pygame.K_DOWN]:
+		guyh = guyh + 4
+	else:
+            if keystate[pygame.K_UP]:
+                gunh -= gunspeed
+            if keystate[pygame.K_DOWN]:
+                gunh += gunspeed
         #Vertical Bounce
-        if guyh < -10 or guyh > 370:
-            guydirs = guydirs - (guydirs*2)
-        guyh = guyh + guydirs
+            if guyh < -10 or guyh > 370:
+                guydirs = guydirs - (guydirs*2)
+            guyh = guyh + guydirs
 
         #Horizontal Bounce
         if east:
             farmer = guy2
-            guyw += guyspeed
+            if debug == True:
+                if keystate[pygame.K_RIGHT]:
+                    if guyw < 560:
+		        guyw = guyw + 4
+                    else:
+			guyw = guyw
+			east = 0
+            else:
+                guyw += guyspeed
             if guyw > 560:
                 east = 0
         else:
             farmer = guy
-            guyw -= guyspeed
+	    if debug == True:
+                if keystate[pygame.K_LEFT]:
+		    guyw = guyw - 4
+		    if guyw < 31 and guyh > gunh-40 and guyh < gunh+100 and guyw > 8:
+			east = 1
+	    else:
+            	guyw -= guyspeed
             if guyw < 31 and guyh > gunh-40 and guyh < gunh+100 and guyw > 8:
                 east = 1
                 guydirs = guydirs- (gunh-(guyh+20)+50)/50.0
@@ -185,7 +208,8 @@ def main(startup=0):
                 screen.blit(text,(0,365))
                 pygame.display.update()
                 if writefile:
-                    highscore(Name,score)
+		    if debug == False:
+                        highscore(Name,score)
                     writefile = 0
                 #FPS and Resource limiting
                 clock.tick(10)
@@ -217,7 +241,7 @@ def main(startup=0):
                             heightheight += 30
                             if stopten == 10:
                                 break
-                        leaderboards = endscorefont.render("Highscores!", True, (213,98,0))
+                        leaderboards = endscorefont.render("Highscores:", True, (213,98,0))
                         screen.blit(leaderboards,(200,30))
                         enterpress = font.render("Press Enter...", True, (44,44,44))
                         screen.blit(enterpress,(250,10))
@@ -232,17 +256,17 @@ def main(startup=0):
 
 
         #Freeze ball
-        randomball = random.randint(1,2000)
+        randomball = random.randint(1,4000)
         if not balls and not freeze and randomball == 399:
             ballw = random.choice(range(100,550,50))
             balls = 1
         #Bonus
-        randombonus = random.randint(1,500)
+        randombonus = random.randint(1,1000)
         if not bonusactive and randombonus == 99:
             bonush = random.choice(range(10,390,10))
             bonusactive = 1
         #Bad bonus
-        randombadbonus = random.randint(1,1000)
+        randombadbonus = random.randint(1,2000)
         if not badbonusactive and randombadbonus == 199:
             badbonush = random.choice(range(5,385,10))
             badbonusactive = 1
@@ -268,9 +292,9 @@ def main(startup=0):
             if bonusw == 650:
                 prize = random.randint(100,180)
 
-            prizething = bonusfont.render(str(prize), True, (255, 255, 255))
+            bonusamount = bonusfont.render(str(prize), True, (255, 255, 255))
             screen.blit(bonus,(bonusw,bonush))
-            screen.blit(prizething,(bonusw+4,bonush))
+            screen.blit(bonusamount,(bonusw+4,bonush))
 
             bonusw -= 2
             if bonusw < 30 and bonush+20 > gunh and bonush < gunh+100 and bonusw > 5:
@@ -286,9 +310,9 @@ def main(startup=0):
             if badbonusw == 650:
                 badprize = random.randint(-99,-30)
 
-            badprizething = bonusfont.render(str(badprize), True, (255, 255, 255))
+            badprizeamount = bonusfont.render(str(badprize), True, (255, 255, 255))
             screen.blit(badbonus,(badbonusw+1,badbonush-1))
-            screen.blit(badprizething,(badbonusw+5,badbonush))
+            screen.blit(badprizeamount,(badbonusw+5,badbonush))
 
             badbonusw -= 3
             if badbonusw < 30 and badbonush+20 > gunh and badbonush < gunh+100 and badbonusw > 5:
@@ -308,31 +332,40 @@ def main(startup=0):
             bonuspoints += 0.5
             gamespeed = 60
             screen.blit(bgfreeze,(0,0))
-            wutevr += 1
-            if wutevr > 600:
+            freezecycle += 1
+            if freezecycle > 600:
                 freeze = 0
                 gamespeed = 90
-                wutevr = 0
+                freezecycle = 0
                 gunspeed = 5
-                scorespeed -= 0.03
+		if debug == False:
+                    scorespeed -= 0.03
 
         #The score algorithm
 	if score < 0:
 		score = 0
         if (score-bonuspoints) < 5000:
 	    if debug == True:
-	        guyspeed = 1
+	        guyspeed = 0
+		scorespeed = 0.15
             else:
                 guyspeed = 2*(score-bonuspoints)/60
-            scorespeed = 0.02*(guyspeed/3)
+                scorespeed = 0.02*(guyspeed/3)
             if 2*(score-bonuspoints)/60 < 4 and 0.02*(guyspeed/3) < 0.04:
 	        if debug == True:
-	            guyspeed = 1
+	            guyspeed = 0
                 else:
                     guyspeed = 4
                 scorespeed = 0.04
             if guyspeed >= 22:
                 guyspeed = 22
+	else:
+	    if debug == True:
+	        guyspeed = 0
+		scorespeed = 0.15
+	    else:
+		guyspeed = 22
+		scorespeed = 0.15  
 
         #Update Screen
         pygame.display.update()
