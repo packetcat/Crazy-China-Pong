@@ -21,11 +21,12 @@ from pygame.locals import *
 from string import ascii_letters
 
 #Version Control
-version = "1.3.3"
+version = "1.4"
+debug = ""
 
 for argument in sys.argv:
     if argument == "--version" or argument == "-v":
-        print "\nCrazy China Pong version "+version
+        print "Crazy China Pong version "+version
         if argument == sys.argv[-1]:
             sys.exit()
         else:
@@ -38,13 +39,18 @@ for argument in sys.argv:
             sys.exit()
         else:
             pass
+    #rcmaehl, I don't know if it worked when you pushed this, but it ain't working for me after the merge. Please use 4 spaces to indent, not tabs btw! The debug mode was quite nice addition to the game, I appreciate your effort. :)
     if argument == "--debug" or argument == "-d":
+        open('.debug', 'w').close()
+        debug = " - Debug"
+    if argument == "--bug" or argument == "-b":
         if os.path.exists(".debug") == True:
             os.remove('.debug')
+        if argument == sys.argv[-1]:
+                sys.exit()
         else:
-	    open('.debug', 'w').close()
-
-pygame.init() and pygame.display.set_caption('Crazy China Pong - '+version)
+            pass
+pygame.init() and pygame.display.set_caption('Crazy China Pong - '+version+debug)
 
 def highscore(player,score):
     #Score output
@@ -52,13 +58,12 @@ def highscore(player,score):
         f.write(player+","+str(int(score))+"\n")
     f.close()
 
-
 def main(startup=0):
     #FPS Clock Method used for Main()
     clock = pygame.time.Clock()
     size = width, height = 600,400
     screen = pygame.display.set_mode(size)
-    debug = os.path.exists(".debug")
+    #debug = os.path.exists(".debug")
 
     font = pygame.font.Font("data/FreeMonoBold.ttf", 12)
     endscorefont = pygame.font.Font("data/FreeMonoBold.ttf", 30)
@@ -100,12 +105,13 @@ def main(startup=0):
             screen.blit(namerequest,(40,120))
             pygame.display.update()
             clock.tick(20)
-
     else:
         Name = startup                
     score = 0
 
+    #Start the intro video
     if startup == 2:
+        #A bunch of variables for the intro
         vgunh = -100
         video = 1
         some_thing = 0
@@ -113,19 +119,40 @@ def main(startup=0):
         vbbonusw = 650
         goodw = 700
         badw = 700
+        vguyw = 650
+        vguyh = 450
+        vballh = -50
+        coldw = 450
+        coldh = -40
+        vfarmer = guy
+        enterh = -20
+        enterstay = 0
+        omgomgomg = 0
         while video:
+            #something
             some_thing += 1
             for event in pygame.event.get():
                 if event.type == pygame.QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
                     sys.exit()
-                if event.type == KEYDOWN and event.key == K_RETURN:
+                if event.type == KEYDOWN and event.key == K_RETURN or event.type == KEYDOWN and event.key == K_SPACE:
                     video = 0
             screen.blit(bg,(0,0))
+
+            if some_thing > 10 and some_thing < 250:
+                enternoaw = bonusfont.render("Press enter to skip", True, (255, 255, 255))
+                screen.blit(enternoaw,(100,enterh))
+                if enterh < 10 and not omgomgomg:
+                    enterh += 2
+                else:
+                    omgomgomg = 1
+                    enterstay += 1
+                    if enterstay > 100:
+                        enterh -= 1
             if some_thing < 400:
                 vgunh += 1.2
             if some_thing < 125:
                 vbonusw -= 5
-                vprizething = bonusfont.render("123", True, (255, 255, 255))
+                vprizething = bonusfont.render("113", True, (255, 255, 255))
                 good = endscorefont.render("This is good.", True, (44,44,99))
                 screen.blit(good, (goodw,140))
                 screen.blit(bonus,(vbonusw,100))
@@ -135,7 +162,7 @@ def main(startup=0):
                 elif some_thing > 80:
                     goodw += 10
                 else:
-                    time.sleep(0.5)
+                    time.sleep(1.5)
             if some_thing > 130 and some_thing < 300:
                 vbbonusw -= 6
                 vbadprizething = bonusfont.render("-42", True, (255, 255, 255))
@@ -148,20 +175,76 @@ def main(startup=0):
                 elif some_thing > 200:
                     badw += 10
                 else:
-                    time.sleep(0.5)
+                    time.sleep(1.5)
                 if some_thing > 200 and some_thing < 235:
                     vgunh -= 4
                 if some_thing > 235 and some_thing < 260:
                     vgunh -= 1.2
+            if some_thing > 230:
+                if some_thing > 280:
+                    vballh += 0.7
+                if some_thing > 230 and some_thing < 360:
+                    coldw -= 3
+                    coldh += 0.7
+                cold = endscorefont.render("This is very good. (and cold)", True, (255,224,219))
+                screen.blit(cold, (coldw,coldh))
+
+                if some_thing < 585:
+                    screen.blit(freezeball, (440,vballh))
+                if some_thing > 600 and some_thing < 650:
+                    coldw += 12
+
+            if some_thing > 250:
+                if some_thing < 458:
+                    vguyh -= 0.9
+                    vguyw -= 3
+                else:
+                    if some_thing == 458:
+                        vfarmer = guy2
+                    vguyh -= 0.7
+                    vguyw += 3
+                    if some_thing > 580 and vgunh > 125:
+                        vgunh -= 1
+                        if int(vgunh) <= 125:
+                            omgomg = 1
+                            introtext1 = endscorefont.render("Do not let the chinese rice", True, (0,50,0))
+                            introtext2 = endscorefont.render("farmer escape to the western", True, (0,50,0))
+                            introtext3 = endscorefont.render("world.", True, (0,50,0))
+                            introtext4 = endscorefont.render("Stop him by controlling", True, (0,50,0))
+                            introtext5 = endscorefont.render("the... thing or whatever", True, (0,50,0))
+                            introtext6 = endscorefont.render("with the arrow keys.", True, (0,50,0))
+                            introtext7 = endscorefont.render("You win if you have fun.", True, (0,50,0))
+                            introtext8 = endscorefont.render("Good luck!", True, (0,50,0))
+                            while omgomg:
+                                for event in pygame.event.get():
+                                    if event.type == pygame.QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
+                                        sys.exit()
+                                    if event.type == KEYDOWN and event.key == K_RETURN or event.type == KEYDOWN and event.key == K_SPACE:
+                                        video = 0
+                                        omgomg = 0
+
+                                screen.blit(bg,(0,0))
+                                screen.blit(introtext1,(70,60))
+                                screen.blit(introtext2,(70,90))
+                                screen.blit(introtext3,(70,120))
+                                screen.blit(introtext4,(70,170))
+                                screen.blit(introtext5,(70,200))
+                                screen.blit(introtext6,(70,230))
+                                screen.blit(introtext7,(70,290))
+                                screen.blit(introtext8,(210,340))
+                                screen.blit(gun,(30,vgunh))
+                                pygame.display.update()
+                                clock.tick(10)
+                screen.blit(vfarmer, (vguyw,vguyh))
             screen.blit(gun,(30,vgunh))
             pygame.display.update()
             clock.tick(50)
-            print some_thing
+
 
     #Farmer Image Direction
     farmer = guy2
     #Gun height
-    gunh = 125.5
+    gunh = 125
     #Farmer height and width
     guyh = 200
     guyw = 280
@@ -171,7 +254,7 @@ def main(startup=0):
     #+/- Value guyh per loop
     guydirs = 0.2
     if debug == True:
-	guyspeed = 1
+        guyspeed = 0
     else:
         guyspeed = 4
     gunspeed = 5
@@ -189,10 +272,9 @@ def main(startup=0):
     ballw = 0
     ballh = -50
     freeze = 0
-    wutevr = 0
+    freezecycle = 0
     while 1:
         previousgh = gunh
-
         score += scorespeed
         for event in pygame.event.get():
             if event.type == pygame.QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
@@ -202,24 +284,48 @@ def main(startup=0):
             gunh = gunh-((gunspeed-1)*(gunh/abs(gunh)))
 
         #Controls
-        if keystate[pygame.K_UP]:
-            gunh -= gunspeed
-        if keystate[pygame.K_DOWN]:
-            gunh += gunspeed
+        if debug == 1:
+            if keystate[115]:
+                gunh += gunspeed
+            if keystate[119]:
+                gunh -= gunspeed
+            if keystate[pygame.K_UP]:
+                guyh = guyh - 4
+            if keystate[pygame.K_DOWN]:
+                guyh = guyh + 4
+        else:
+            if keystate[pygame.K_UP]:
+                gunh -= gunspeed
+            if keystate[pygame.K_DOWN]:
+                gunh += gunspeed
         #Vertical Bounce
-        if guyh < -10 or guyh > 370:
-            guydirs = guydirs - (guydirs*2)
-        guyh = guyh + guydirs
+            if guyh < -10 or guyh > 370:
+                guydirs = guydirs - (guydirs*2)
+            guyh = guyh + guydirs
 
         #Horizontal Bounce
         if east:
             farmer = guy2
-            guyw += guyspeed
+            if debug == True:
+                if keystate[pygame.K_RIGHT]:
+                    if guyw < 560:
+                        guyw = guyw + 4
+                    else:
+                        guyw = guyw
+                        east = 0
+            else:
+                guyw += guyspeed
             if guyw > 560:
                 east = 0
         else:
             farmer = guy
-            guyw -= guyspeed
+            if debug == True:
+                if keystate[pygame.K_LEFT]:
+                    guyw = guyw - 4
+                    if guyw < 31 and guyh > gunh-40 and guyh < gunh+100 and guyw > 8:
+                        east = 1
+            else:
+                    guyw -= guyspeed
             if guyw < 31 and guyh > gunh-40 and guyh < gunh+100 and guyw > 8:
                 east = 1
                 guydirs = guydirs- (gunh-(guyh+20)+50)/50.0
@@ -276,8 +382,8 @@ def main(startup=0):
                             heightheight += 30
                             if stopten == 10:
                                 break
-                        leaderboards = endscorefont.render("Highscores!", True, (213,98,0))
-                        screen.blit(leaderboards,(200,30))
+                        leaderboards = endscorefont.render("Highscores", True, (213,98,0))
+                        screen.blit(leaderboards,(200,25))
                         enterpress = font.render("Press Enter...", True, (44,44,44))
                         screen.blit(enterpress,(250,10))
                         screen.blit(text,(0,369))
@@ -293,17 +399,17 @@ def main(startup=0):
 
 
         #Freeze ball
-        randomball = random.randint(1,2000)
+        randomball = random.randint(1,4000)
         if not balls and not freeze and randomball == 399:
             ballw = random.choice(range(100,550,50))
             balls = 1
         #Bonus
-        randombonus = random.randint(1,500)
+        randombonus = random.randint(1,1000)
         if not bonusactive and randombonus == 99:
             bonush = random.choice(range(10,390,10))
             bonusactive = 1
         #Bad bonus
-        randombadbonus = random.randint(1,1000)
+        randombadbonus = random.randint(1,2000)
         if not badbonusactive and randombadbonus == 199:
             badbonush = random.choice(range(5,385,10))
             badbonusactive = 1
@@ -329,9 +435,9 @@ def main(startup=0):
             if bonusw == 650:
                 prize = random.randint(100,180)
 
-            prizething = bonusfont.render(str(prize), True, (255, 255, 255))
+            bonusamount = bonusfont.render(str(prize), True, (255, 255, 255))
             screen.blit(bonus,(bonusw,bonush))
-            screen.blit(prizething,(bonusw+4,bonush))
+            screen.blit(bonusamount,(bonusw+4,bonush))
 
             bonusw -= 2
             if bonusw < 30 and bonush+20 > gunh and bonush < gunh+100 and bonusw > 5:
@@ -347,9 +453,9 @@ def main(startup=0):
             if badbonusw == 650:
                 badprize = random.randint(-99,-30)
 
-            badprizething = bonusfont.render(str(badprize), True, (255, 255, 255))
+            badprizeamount = bonusfont.render(str(badprize), True, (255, 255, 255))
             screen.blit(badbonus,(badbonusw+1,badbonush-1))
-            screen.blit(badprizething,(badbonusw+5,badbonush))
+            screen.blit(badprizeamount,(badbonusw+5,badbonush))
 
             badbonusw -= 3
             if badbonusw < 30 and badbonush+20 > gunh and badbonush < gunh+100 and badbonusw > 5:
@@ -360,6 +466,7 @@ def main(startup=0):
             if badbonusw < -50:
                 badbonusactive = 0
                 badbonusw = 650
+
         screen.blit(farmer,(guyw,guyh))
         screen.blit(gun,(30,gunh))
 
@@ -369,31 +476,40 @@ def main(startup=0):
             bonuspoints += 0.5
             gamespeed = 60
             screen.blit(bgfreeze,(0,0))
-            wutevr += 1
-            if wutevr > 600:
+            freezecycle += 1
+            if freezecycle > 600:
                 freeze = 0
                 gamespeed = 90
-                wutevr = 0
+                freezecycle = 0
                 gunspeed = 5
-                scorespeed -= 0.03
+                if debug == False:
+                    scorespeed -= 0.03
 
         #The score algorithm
-	if score < 0:
-		score = 0
+        if score < 0:
+                score = 0
         if (score-bonuspoints) < 5000:
-	    if debug == True:
-	        guyspeed = 1
+            if debug == True:
+                guyspeed = 0
+                scorespeed = 0.15
             else:
                 guyspeed = 2*(score-bonuspoints)/60
-            scorespeed = 0.02*(guyspeed/3)
+                scorespeed = 0.02*(guyspeed/3)
             if 2*(score-bonuspoints)/60 < 4 and 0.02*(guyspeed/3) < 0.04:
-	        if debug == True:
-	            guyspeed = 1
+                if debug == True:
+                    guyspeed = 0
                 else:
                     guyspeed = 4
                 scorespeed = 0.04
             if guyspeed >= 22:
                 guyspeed = 22
+        else:
+            if debug == True:
+                guyspeed = 0
+                scorespeed = 0.15
+            else:
+                guyspeed = 22
+                scorespeed = 0.15  
 
         #Update Screen
         pygame.display.update()
