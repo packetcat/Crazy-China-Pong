@@ -5,13 +5,16 @@ python 2.x (NOTE - Python 3 users, use python2 Crazy_China_Pong.py to play)
 python-pygame.
 
 WINDOWS USERS:
-If you don't already have Python installed, get the Windows binary here (get the 32-bit even if you have 64-bit Windows) - http://www.python.org/getit/
-After you have installed Python, get the pygame Windows binary here - http://www.pygame.org/download.shtml
+If you don't already have Python installed, get the Windows binary here (either 32 or 64 bit is fine) - http://www.python.org/getit/
+After you have installed Python, get the appropriate pygame Windows binary here (install 32 or 64 bit, depending on which version of python you installed: http://www.lfd.uci.edu/~gohlke/pythonlibs/#pygame
 
 Windows and Mac users: I'm not really sure if the game works with mac and windows, if you use it and you have tried to play the game, let us know if it worked, or if it didn't and what the problem was and we would be grateful. :)
 
-Tested with python 2.6 and pygame 1.8.1
-Does NOT work with Python 3.
+Testing done:
+- Tested with python 2.6 and pygame 1.8.1. (Arch Linux)
+- Tested on Windows 7 x64, with Python 2.7 x64 with pygame 1.9.2 pre. 
+- Tested on latest OS X with python 2.6 and pygame 1.9.2 pre
+- Does NOT work with Python 3.x.
 
 TODO:
     * Some type of powerups, I'm thinking simple but effective. 
