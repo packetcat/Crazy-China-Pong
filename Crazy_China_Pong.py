@@ -24,12 +24,16 @@ from string import ascii_letters
 #Robert Maehl - Smartviking - Please name your variables better.
 #Robert Maehl - Smartviking - We need to make it so the resources get reused instead of drawn with each game.
 #Robert Maehl - ALL - I recommend using scite for editing from now on (sudo apt-get install scite)
+#Robert Maehl - ALL - You can change scite's spacing and tabs using Ctrl + Shift + I
 
 #Version Control
-version = "1.4.1"
+version = "1.4.2"
 debug = ""
+skipvid = False
 
 for argument in sys.argv:
+    if argument == "--novideo":
+        skipvid = True
     if argument == "--version" or argument == "-v":
         print "Crazy China Pong version "+version
         if argument == sys.argv[-1]:
@@ -39,7 +43,7 @@ for argument in sys.argv:
     if argument == "--credits":
         print "Crazy China Pong "+version+" Credits:\n\n"+\
             "Coding            : SmartViking\n"+" "*20+"Staticsafe\n"+" "*20+"Robert Maehl\n\n"+\
-            "Artwork(whatever) : SmartViking"
+            "Artwork           : SmartViking"
         if argument == sys.argv[-1]:
             sys.exit()
         else:
@@ -113,134 +117,135 @@ def main(startup=0):
     score = 0
 
     #Intro Video
-    if startup == 2:
-        #Intro Video Variables
-        vgunh = -100
-        video = 1
-        videocycle = 0
-        vbonusw = 650
-        vbbonusw = 650
-        goodw = 700
-        badw = 700
-        vguyw = 650
-        vguyh = 450
-        vballh = -50
-        coldw = 450
-        coldh = -40
-        vfarmer = guy
-        enterh = -20
-        enterstay = 0
-        skipped = 0
-        while video:
-            videocycle += 1
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
-                    sys.exit()
-                if event.type == KEYDOWN and event.key == K_RETURN or event.type == KEYDOWN and event.key == K_SPACE:
-                    video = 0
-            screen.blit(bg,(0,0))
+    if skipvid == False:
+        if startup == 2:
+            #Intro Video Variables
+            vgunh = -100
+            video = 1
+            videocycle = 0
+            vbonusw = 650
+            vbbonusw = 650
+            goodw = 700
+            badw = 700
+            vguyw = 650
+            vguyh = 450
+            vballh = -50
+            coldw = 450
+            coldh = -40
+            vfarmer = guy
+            enterh = -20
+            enterstay = 0
+            skipped = 0
+            while video:
+                videocycle += 1
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
+                        sys.exit()
+                    if event.type == KEYDOWN and event.key == K_RETURN or event.type == KEYDOWN and event.key == K_SPACE:
+                        video = 0
+                screen.blit(bg,(0,0))
 
-            if videocycle > 10 and videocycle < 250:
-                enternoaw = bonusfont.render("Press enter to skip", True, (255, 255, 255))
-                screen.blit(enternoaw,(100,enterh))
-                if enterh < 10 and not skipped:
-                    enterh += 2
-                else:
-                    skipped = 1
-                    enterstay += 1
-                    if enterstay > 100:
-                        enterh -= 1
-            if videocycle < 400:
-                vgunh += 1.2
-            if videocycle < 125:
-                vbonusw -= 5
-                vprize = bonusfont.render("113", True, (255, 255, 255))
-                good = endscorefont.render("This is good.", True, (44,44,99))
-                screen.blit(good, (goodw,140))
-                screen.blit(bonus,(vbonusw,100))
-                screen.blit(vprize,(vbonusw+4,100))
-                if videocycle < 80:
-                    goodw -= 7
-                elif videocycle > 80:
-                    goodw += 10
-                else:
-                    time.sleep(1.5)
-            if videocycle > 130 and videocycle < 300:
-                vbbonusw -= 6
-                vbadprize = bonusfont.render("-42", True, (255, 255, 255))
-                bad = endscorefont.render("This is bad.", True, (222,54,19))
-                screen.blit(bad, (badw,230))
-                screen.blit(badbonus,(vbbonusw,180))
-                screen.blit(vbadprize,(vbbonusw+4,180))
-                if videocycle < 200:
-                    badw -= 8
-                elif videocycle > 200:
-                    badw += 10
-                else:
-                    time.sleep(1.5)
-                if videocycle > 200 and videocycle < 235:
-                    vgunh -= 4
-                if videocycle > 235 and videocycle < 260:
-                    vgunh -= 1.2
-            if videocycle > 230:
-                if videocycle > 280:
-                    vballh += 0.7
-                if videocycle > 230 and videocycle < 360:
-                    coldw -= 3
-                    coldh += 0.7
-                cold = endscorefont.render("This is very good (and cold).", True, (255,224,219))
-                screen.blit(cold, (coldw,coldh))
+                if videocycle > 10 and videocycle < 250:
+                    enternoaw = bonusfont.render("Press enter to skip", True, (255, 255, 255))
+                    screen.blit(enternoaw,(100,enterh))
+                    if enterh < 10 and not skipped:
+                        enterh += 2
+                    else:
+                        skipped = 1
+                        enterstay += 1
+                        if enterstay > 100:
+                            enterh -= 1
+                if videocycle < 400:
+                    vgunh += 1.2
+                if videocycle < 125:
+                    vbonusw -= 5
+                    vprize = bonusfont.render("113", True, (255, 255, 255))
+                    good = endscorefont.render("This is good.", True, (44,44,99))
+                    screen.blit(good, (goodw,140))
+                    screen.blit(bonus,(vbonusw,100))
+                    screen.blit(vprize,(vbonusw+4,100))
+                    if videocycle < 80:
+                        goodw -= 7
+                    elif videocycle > 80:
+                        goodw += 10
+                    else:
+                        time.sleep(1.5)
+                if videocycle > 130 and videocycle < 300:
+                    vbbonusw -= 6
+                    vbadprize = bonusfont.render("-42", True, (255, 255, 255))
+                    bad = endscorefont.render("This is bad.", True, (222,54,19))
+                    screen.blit(bad, (badw,230))
+                    screen.blit(badbonus,(vbbonusw,180))
+                    screen.blit(vbadprize,(vbbonusw+4,180))
+                    if videocycle < 200:
+                        badw -= 8
+                    elif videocycle > 200:
+                        badw += 10
+                    else:
+                        time.sleep(1.5)
+                    if videocycle > 200 and videocycle < 235:
+                        vgunh -= 4
+                    if videocycle > 235 and videocycle < 260:
+                        vgunh -= 1.2
+                if videocycle > 230:
+                    if videocycle > 280:
+                        vballh += 0.7
+                    if videocycle > 230 and videocycle < 360:
+                        coldw -= 3
+                        coldh += 0.7
+                    cold = endscorefont.render("This is very good (and cold).", True, (255,224,219))
+                    screen.blit(cold, (coldw,coldh))
 
-                if videocycle < 585:
-                    screen.blit(freezeball, (440,vballh))
-                if videocycle > 600 and videocycle < 650:
-                    coldw += 12
+                    if videocycle < 585:
+                        screen.blit(freezeball, (440,vballh))
+                    if videocycle > 600 and videocycle < 650:
+                        coldw += 12
 
-            if videocycle > 250:
-                if videocycle < 458:
-                    vguyh -= 0.9
-                    vguyw -= 3
-                else:
-                    if videocycle == 458:
-                        vfarmer = guy2
-                    vguyh -= 0.7
-                    vguyw += 3
-                    if videocycle > 580 and vgunh > 125:
-                        vgunh -= 1
-                        if int(vgunh) <= 125:
-                            textloop = 1
-                            introtext1 = endscorefont.render("Do not let the Chinese rice", True, (0,50,0))
-                            introtext2 = endscorefont.render("farmer escape to the western", True, (0,50,0))
-                            introtext3 = endscorefont.render("world.", True, (0,50,0))
-                            introtext4 = endscorefont.render("Stop him by controlling", True, (0,50,0))
-                            introtext5 = endscorefont.render("the in game paddle", True, (0,50,0))
-                            introtext6 = endscorefont.render("with the arrow keys.", True, (0,50,0))
-                            introtext7 = endscorefont.render("You win if you have fun.", True, (0,50,0))
-                            introtext8 = endscorefont.render("Good luck!", True, (0,50,0))
-                            while textloop:
-                                for event in pygame.event.get():
-                                    if event.type == pygame.QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
-                                        sys.exit()
-                                    if event.type == KEYDOWN and event.key == K_RETURN or event.type == KEYDOWN and event.key == K_SPACE:
-                                        video = 0
-                                        textloop = 0
+                if videocycle > 250:
+                    if videocycle < 458:
+                        vguyh -= 0.9
+                        vguyw -= 3
+                    else:
+                        if videocycle == 458:
+                            vfarmer = guy2
+                        vguyh -= 0.7
+                        vguyw += 3
+                        if videocycle > 580 and vgunh > 125:
+                            vgunh -= 1
+                            if int(vgunh) <= 125:
+                                textloop = 1
+                                introtext1 = endscorefont.render("Do not let the Chinese rice", True, (0,50,0))
+                                introtext2 = endscorefont.render("farmer escape to the western", True, (0,50,0))
+                                introtext3 = endscorefont.render("world.", True, (0,50,0))
+                                introtext4 = endscorefont.render("Stop him by controlling", True, (0,50,0))
+                                introtext5 = endscorefont.render("the in game paddle", True, (0,50,0))
+                                introtext6 = endscorefont.render("with the arrow keys.", True, (0,50,0))
+                                introtext7 = endscorefont.render("You win if you have fun.", True, (0,50,0))
+                                introtext8 = endscorefont.render("Good luck!", True, (0,50,0))
+                                while textloop:
+                                    for event in pygame.event.get():
+                                        if event.type == pygame.QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
+                                            sys.exit()
+                                        if event.type == KEYDOWN and event.key == K_RETURN or event.type == KEYDOWN and event.key == K_SPACE:
+                                            video = 0
+                                            textloop = 0
 
-                                screen.blit(bg,(0,0))
-                                screen.blit(introtext1,(70,60))
-                                screen.blit(introtext2,(70,90))
-                                screen.blit(introtext3,(70,120))
-                                screen.blit(introtext4,(70,170))
-                                screen.blit(introtext5,(70,200))
-                                screen.blit(introtext6,(70,230))
-                                screen.blit(introtext7,(70,290))
-                                screen.blit(introtext8,(340,340))
-                                screen.blit(gun,(30,vgunh))
-                                pygame.display.update()
-                                clock.tick(10)
-                screen.blit(vfarmer, (vguyw,vguyh))
-            screen.blit(gun,(30,vgunh))
-            pygame.display.update()
-            clock.tick(50)
+                                    screen.blit(bg,(0,0))
+                                    screen.blit(introtext1,(70,60))
+                                    screen.blit(introtext2,(70,90))
+                                    screen.blit(introtext3,(70,120))
+                                    screen.blit(introtext4,(70,170))
+                                    screen.blit(introtext5,(70,200))
+                                    screen.blit(introtext6,(70,230))
+                                    screen.blit(introtext7,(70,290))
+                                    screen.blit(introtext8,(340,340))
+                                    screen.blit(gun,(30,vgunh))
+                                    pygame.display.update()
+                                    clock.tick(10)
+                    screen.blit(vfarmer, (vguyw,vguyh))
+                screen.blit(gun,(30,vgunh))
+                pygame.display.update()
+                clock.tick(50)
 
     farmer = guy2 #Farmer Image Direction
     gunh = 125 #Gun height
@@ -320,11 +325,11 @@ def main(startup=0):
             if debug == True:
                 if keystate[pygame.K_LEFT]:
                     guyw = guyw - 4
-                if guyw < 31 and guyh > gunh-40 and guyh < gunh+100 and guyw > 8:
+                if guyw < 31 and guyh > gunh-20 and guyh < gunh+85 and guyw > 8:
                     east = 1
             else:
                 guyw -= guyspeed
-                if guyw < 31 and guyh > gunh-40 and guyh < gunh+100 and guyw > 8:
+                if guyw < 31 and guyh > gunh-20 and guyh < gunh+85 and guyw > 8:
                     east = 1
                     guydirs = guydirs- (gunh-(guyh+20)+50)/50.0
                     if previousgh > gunh:
@@ -392,7 +397,6 @@ def main(startup=0):
                                     sys.exit()
                                 if event.type == KEYDOWN and event.key == K_RETURN or event.type == KEYDOWN and event.key == K_h:
                                     brk = 0
-
 
         #Freeze ball
         randomball = random.randint(1,4000)
@@ -483,29 +487,18 @@ def main(startup=0):
 
         #The score algorithm
         if score < 0:
-                score = 0
-        if (score-bonuspoints) < 5000:
-            if debug == True:
-                guyspeed = 0
-                scorespeed = 0.15
-            else:
-                guyspeed = 2*(score-bonuspoints)/60
-                scorespeed = 0.02*(guyspeed/3)
-            if 2*(score-bonuspoints)/60 < 4 and 0.02*(guyspeed/3) < 0.04:
-                if debug == True:
-                    guyspeed = 0
-                else:
-                    guyspeed = 4
-                scorespeed = 0.04
+            score = 0
+        if (score-bonuspoints) < 5000 and debug == False and not 2*(score-bonuspoints)/60 < 4 and not 0.02*(guyspeed/3) < 0.04:
+            guyspeed = 2*(score-bonuspoints)/60
+            scorespeed = 0.02*(guyspeed/3)
+        elif debug == False:
+            scorespeed = 0.04
+            guyspeed = 4
             if guyspeed >= 22:
                 guyspeed = 22
         else:
-            if debug == True:
-                guyspeed = 0
-                scorespeed = 0.15
-            else:
-                guyspeed = 22
-                scorespeed = 0.15  
+            guyspeed = 0
+            scorespeed = 0.15  
 
         #Update Screen
         pygame.display.update()
