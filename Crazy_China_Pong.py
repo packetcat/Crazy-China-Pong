@@ -21,15 +21,15 @@ from pygame.locals import *
 from string import ascii_letters
 
 #Developer notes to other developers (Format is: From - To - Message)
-#Robert Maehl - Smartviking - Please name your variables better.
-#Robert Maehl - Smartviking - We need to make it so the resources get reused instead of drawn with each game.
-#Robert Maehl - ALL - I recommend using scite for editing from now on (sudo apt-get install scite)
-#Robert Maehl - ALL - You can change scite's spacing and tabs using Ctrl + Shift + I
+    #Robert Maehl - Smartviking - Please name your variables better.
+    #Robert Maehl - Smartviking - We need to make it so the resources get reused instead of drawn with each game.
+    #Robert Maehl - ALL - I recommend using scite for editing from now on (sudo apt-get install scite)
+    #Robert Maehl - ALL - You can change scite's spacing and tabs using Ctrl + Shift + I
+    #Robert Maehl - ALL - While in Debug Mode hold both left and right arrows to make the guy bounce.
 
-#Version Control
-version = "1.4.2"
-debug = ""
-skipvid = False
+version = "1.4.2" #Version Control
+debug = "" #Debug Control
+skipvid = False #Video Control
 
 for argument in sys.argv:
     if argument == "--novideo":
@@ -50,7 +50,7 @@ for argument in sys.argv:
             pass
     if argument == "--debug" or argument == "-d":
         open('.debug', 'w').close()
-        debug = " - Debug"
+        debug = " - Debug Mode"
     if argument == "--bug" or argument == "-b":
         if os.path.exists(".debug") == True:
             os.remove('.debug')
@@ -60,8 +60,7 @@ for argument in sys.argv:
             pass
 pygame.init() and pygame.display.set_caption('Crazy China Pong - '+version+debug)
 
-def highscore(player,score):
-    #Score output
+def highscore(player,score): #Score Output
     with open('.score', 'a') as f:
         f.write(player+","+str(int(score))+"\n")
     f.close()
@@ -87,8 +86,7 @@ def main(startup=0):
     bgfreeze = pygame.image.load("data/bgfreeze.png")
     freezeball = pygame.image.load("data/freeze.png")
 
-    #Start Screen
-    if startup == 2:
+    if startup == 2: #Start Screen
         write = 1
         Name = getpass.getuser()
         while write:
@@ -106,9 +104,9 @@ def main(startup=0):
                     if Name == "": Name = getpass.getuser()
                     write = 0
             screen.blit(bg,(0,0))
-            namename = endscorefont.render(Name, True, (44,44,44))
+            nameview = endscorefont.render(Name, True, (44,44,44))
             namerequest = endscorefont.render("Enter your name...", True, (213, 98, 0))
-            screen.blit(namename,(40,150))
+            screen.blit(nameview,(40,150))
             screen.blit(namerequest,(40,120))
             pygame.display.update()
             clock.tick(20)
@@ -254,10 +252,9 @@ def main(startup=0):
     east = 1 #Farmer Direction Variable
 
     guydirs = 0.2 #+/- Value guyh per loop
+    guyspeed = 4
     if debug == True:
         guyspeed = 0
-    else:
-        guyspeed = 4
     gunspeed = 5
     scorespeed = 0.01 #Score
 
@@ -280,7 +277,7 @@ def main(startup=0):
             if event.type == pygame.QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
                 sys.exit()
         keystate = pygame.key.get_pressed()
-        if gunh > 300  or gunh < 0:
+        if not 300 >= gunh >= 0:
             gunh = gunh-((gunspeed-1)*(gunh/abs(gunh)))
 
         #Controls
@@ -294,7 +291,7 @@ def main(startup=0):
             if keystate[pygame.K_DOWN]:
                 guyh = guyh + 4
             #Vertical Limiting
-            if guyh < -14 or guyh > 374:
+            if not 374 > guyh > -14:
                 guyh = guyh-(8*(guyh/abs(guyh)))
         else:
             if keystate[pygame.K_UP]:
@@ -302,7 +299,7 @@ def main(startup=0):
             if keystate[pygame.K_DOWN]:
                 gunh += gunspeed
             #Vertical Bounce
-            if guyh < -10 or guyh > 370:
+            if not 370 > guyh > -10:
                 guydirs = guydirs - (guydirs*2)
             guyh = guyh + guydirs
 
@@ -311,11 +308,7 @@ def main(startup=0):
             farmer = guy2
             if debug == True:
                 if keystate[pygame.K_RIGHT]:
-                    if guyw < 560:
-                        guyw = guyw + 4
-                    else:
-                        guyw = guyw
-                        east = 0
+                    guyw = guyw + 4
             else:
                 guyw += guyspeed
             if guyw > 560:
@@ -325,17 +318,15 @@ def main(startup=0):
             if debug == True:
                 if keystate[pygame.K_LEFT]:
                     guyw = guyw - 4
-                if guyw < 31 and guyh > gunh-20 and guyh < gunh+85 and guyw > 8:
-                    east = 1
             else:
                 guyw -= guyspeed
-                if guyw < 31 and guyh > gunh-20 and guyh < gunh+85 and guyw > 8:
-                    east = 1
-                    guydirs = guydirs- (gunh-(guyh+20)+50)/50.0
-                    if previousgh > gunh:
-                        guydirs -= 0.9
-                    elif previousgh < gunh:
-                        guydirs += 0.9
+            if 8 < guyw < 31 and guyh > gunh-20 and guyh < gunh+85:
+                east = 1
+                guydirs = guydirs- (gunh-(guyh+20)+50)/50.0
+                if previousgh > gunh:
+                    guydirs -= 0.9
+                elif previousgh < gunh:
+                    guydirs += 0.9
 
         #Pause Screen
         if guyw < 0:
@@ -390,13 +381,13 @@ def main(startup=0):
                         screen.blit(text,(0,369))
 
                         pygame.display.update()
-                        brk = 1
-                        while brk:
+                        pause = 1
+                        while pause:
                             for event in pygame.event.get():
                                 if event.type == pygame.QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
                                     sys.exit()
                                 if event.type == KEYDOWN and event.key == K_RETURN or event.type == KEYDOWN and event.key == K_h:
-                                    brk = 0
+                                    pause = 0
 
         #Freeze ball
         randomball = random.randint(1,4000)
@@ -417,7 +408,6 @@ def main(startup=0):
         screen.blit(bg,(0,0))
         text = font.render(" Score: "+str(int(score))+"  "+"Speed: "+str(int(guyspeed))+" ", True, (255, 255, 255), (213, 98, 0))
         screen.blit(text, (50,10))
-
 
         if balls:
             screen.blit(freezeball,(ballw,ballh))
@@ -440,7 +430,7 @@ def main(startup=0):
             screen.blit(bonusamount,(bonusw+4,bonush))
 
             bonusw -= 2
-            if bonusw < 30 and bonush+20 > gunh and bonush < gunh+100 and bonusw > 5:
+            if 5 < bonusw < 30 and bonush+20 > gunh and bonush < gunh+100:
                 score += prize
                 bonuspoints += prize
                 bonusactive = 0
@@ -458,7 +448,7 @@ def main(startup=0):
             screen.blit(badprizeamount,(badbonusw+5,badbonush))
 
             badbonusw -= 3
-            if badbonusw < 30 and badbonush+20 > gunh and badbonush < gunh+100 and badbonusw > 5:
+            if 5 < badbonusw < 30 and badbonush+20 > gunh and badbonush < gunh+100:
                 score += badprize
                 bonuspoints += badprize
                 badbonusactive = 0
@@ -494,7 +484,7 @@ def main(startup=0):
         elif debug == False:
             scorespeed = 0.04
             guyspeed = 4
-            if guyspeed >= 22:
+            if guyspeed > 22:
                 guyspeed = 22
         else:
             guyspeed = 0
