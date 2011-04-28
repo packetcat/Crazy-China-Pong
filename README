@@ -11,7 +11,8 @@ After you have installed Python, get the appropriate pygame Windows binary here 
 Windows and Mac users: I'm not really sure if the game works with mac and windows, if you use it and you have tried to play the game, let us know if it worked, or if it didn't and what the problem was and we would be grateful. :)
 
 Testing done:
-- Tested with python 2.6 and pygame 1.8.1. (Arch Linux)
+- Tested with python 2.6 and pygame 1.8.1.
+- Tested with Arch linux, Debian 6, Fedora 15 and Ubuntu, should work for all.
 - Tested on Windows 7 x64, with Python 2.7 x64 with pygame 1.9.2 pre. 
 - Tested on latest OS X with python 2.6 and pygame 1.9.2 pre
 - Does NOT work with Python 3.x.
