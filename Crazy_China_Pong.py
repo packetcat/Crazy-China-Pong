@@ -205,7 +205,7 @@ def main(startup=0,songnumber=10):
                 if event.type == KEYDOWN and event.key == K_RETURN or event.type == KEYDOWN and event.key == K_SPACE:
                     video = 0
             screen.blit(bgimg,(0,0))
-            if videocycle > 10 and videocycle < 250:
+            if 250 > videocycle > 10:
                 enternoaw = bonusfont.render("Press enter to skip", True, (255, 255, 255))
                 screen.blit(enternoaw,(100,enterh))
                 if enterh < 10 and not skipped:
@@ -230,7 +230,7 @@ def main(startup=0,songnumber=10):
                     goodw += 10
                 else:
                     time.sleep(1.5)
-            if videocycle > 130 and videocycle < 300:
+            if 300 > videocycle > 130:
                 vbbonusw -= 6
                 vbadprize = bonusfont.render("-42", True, (255, 255, 255))
                 bad = endscorefont.render("This is bad.", True, (222,54,19))
@@ -243,14 +243,14 @@ def main(startup=0,songnumber=10):
                     badw += 10
                 else:
                     time.sleep(1.5)
-                if videocycle > 200 and videocycle < 235:
+                if 235 > videocycle > 200:
                     vgunh -= 4
-                if videocycle > 235 and videocycle < 260:
+                if 260 > videocycle > 235:
                     vgunh -= 1.2
             if videocycle > 230:
                 if videocycle > 280:
                     vballh += 0.7
-                if videocycle > 230 and videocycle < 360:
+                if 360 > videocycle > 230:
                     coldw -= 3
                     coldh += 0.7
                 cold = endscorefont.render("This is very good (and cold).", True, (255,224,219))
@@ -258,7 +258,7 @@ def main(startup=0,songnumber=10):
 
                 if videocycle < 585:
                     screen.blit(freezeball, (440,vballh))
-                if videocycle > 600 and videocycle < 650:
+                if 650 > videocycle > 600:
                     coldw += 12
             if videocycle > 250:
                 if videocycle < 458:
@@ -377,7 +377,7 @@ def main(startup=0,songnumber=10):
                 gunmov += gunspeed/3.0
 
 
-            if gunmov < 0.2 and gunmov > -0.2:
+            if -0.2 < gunmov < 0.2:
                 gunmov = 0
 
             elif gunmov > 0:
@@ -394,14 +394,14 @@ def main(startup=0,songnumber=10):
             if gunmov < -7:
                 gunmov = -7
 
-            if gunh > 300 and not mouse or gunh < 0 and not mouse:
+            if not 300 > gunh > 0 and not mouse:
                 if gunh > 300:
                     gunh -= 5
                 else:
                     gunh += 5
 
             gunh += gunmov
-
+    
             #Vertical Bounce
             if not 370 > guyh > -10:
                 guydirs = guydirs - (guydirs*2)
