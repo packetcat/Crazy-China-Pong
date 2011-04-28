@@ -205,7 +205,7 @@ def main(startup=0,songnumber=10):
                 if event.type == KEYDOWN and event.key == K_RETURN or event.type == KEYDOWN and event.key == K_SPACE:
                     video = 0
             screen.blit(bgimg,(0,0))
-            if 250 >    videocycle > 10:
+            if 250 > videocycle > 10:
                 enternoaw = bonusfont.render("Press enter to skip", True, (255, 255, 255))
                 screen.blit(enternoaw,(100,enterh))
                 if enterh < 10 and not skipped:
