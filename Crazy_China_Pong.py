@@ -110,7 +110,7 @@ def mpause(musicp):
         pygame.mixer.music.pause()
         return 1
 
-whichsong = random.choice(range(10,30,10))
+whichsong = random.choice(range(10,40,10))
 music(whichsong)
 
 def main(startup=0,songnumber=10):
@@ -139,14 +139,18 @@ def main(startup=0,songnumber=10):
     if startup == 2: #Start Screen
         write = 1
         Name = getpass.getuser()
-        numb = ["1","2","3","4","5","6","7","8","9"]
+        numb = ["1","2","3","4","5","6","7","8","9","0"]
         upper = 0
+        remove = 0
         while write:
             keystate = pygame.key.get_pressed()
+            pygame.key.set_repeat(1000, 100)
             if keystate[K_LSHIFT]:
                 upper = 1
             else:
                 upper = 0
+            if keystate[K_BACKSPACE]:
+                Name = Name[:-1]
             for event in pygame.event.get():
                 if event.type == pygame.QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
                     sys.exit()
@@ -156,10 +160,8 @@ def main(startup=0,songnumber=10):
                             Name += str(pygame.key.name(event.key)).upper()
                         else:
                             Name += str(pygame.key.name(event.key))
-                        if Name.count("") == 20:
+                        if Name.count("") == 25:
                             Name = Name[:-1]
-                if event.type == KEYDOWN and event.key == K_BACKSPACE:
-                    Name = Name[:-1]
                 if event.type == KEYDOWN and event.key == K_RETURN:
                     if Name == "": Name = getpass.getuser()
                     write = 0
