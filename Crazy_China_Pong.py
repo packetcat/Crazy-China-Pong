@@ -18,7 +18,7 @@
 
 import sys, pygame, random, getpass, os.path, time
 from pygame.locals import *
-from string import ascii_letters
+from string import ascii_lowercase
 
 #Developer notes to other developers (Format is: From - To - Message)
     #Robert Maehl - Smartviking - Please name your variables better.
@@ -70,11 +70,6 @@ pygame.init()
 pygame.display.set_icon(pygame.image.load("data/icon.png"))
 pygame.display.set_caption('Crazy China Pong - '+version+debug)
 pygame.mixer.init()
-#fun = pygame.mixer.music.load("data/music/fun.ogg")
-#impatient = pygame.mixer.music.load("data/music/impatient.ogg")
-#pygame.mixer.music.play(-1)
-#pygame.mixer.music.set_volume(0.4)
-
 
 def music(song):
     if song == 10:
@@ -147,15 +142,18 @@ def main(startup=0,songnumber=10):
             pygame.key.set_repeat(1000, 100)
             if keystate[K_LSHIFT]:
                 upper = 1
+            elif keystate[K_CAPSLOCK]:
+                upper = 1
             else:
                 upper = 0
             if keystate[K_BACKSPACE]:
                 Name = Name[:-1]
+
             for event in pygame.event.get():
                 if event.type == pygame.QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
                     sys.exit()
                 if event.type == KEYDOWN:
-                    if str(pygame.key.name(event.key)) in (list(ascii_letters) + numb):
+                    if str(pygame.key.name(event.key)) in (list(ascii_lowercase) + numb):
                         if upper:
                             Name += str(pygame.key.name(event.key)).upper()
                         else:
