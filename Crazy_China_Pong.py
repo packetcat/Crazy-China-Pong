@@ -16,9 +16,10 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-import sys, pygame, random, getpass, os.path, time
+import sys, pygame, random, os.path, time
 from pygame.locals import *
 from string import ascii_lowercase
+from pygnamelib.pygnamelib import getname
 
 #Developer notes to other developers (Format is: From - To - Message)
     #Robert Maehl - Smartviking - Please name your variables better.
@@ -132,46 +133,9 @@ def main(startup=0,songnumber=10):
     freezeball = pygame.image.load("data/freeze.png")
     bgimg = bg
     if startup == 2: #Start Screen
-        write = 1
-        Name = getpass.getuser()
-        numb = ["1","2","3","4","5","6","7","8","9","0"]
-        upper = 0
-        remove = 0
-        while write:
-            keystate = pygame.key.get_pressed()
-            pygame.key.set_repeat(1000, 100)
-            if keystate[K_LSHIFT]:
-                upper = 1
-            elif keystate[K_CAPSLOCK]:
-                upper = 1
-            else:
-                upper = 0
-            if keystate[K_BACKSPACE]:
-                Name = Name[:-1]
-
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
-                    sys.exit()
-                if event.type == KEYDOWN:
-                    if str(pygame.key.name(event.key)) in (list(ascii_lowercase) + numb):
-                        if upper:
-                            Name += str(pygame.key.name(event.key)).upper()
-                        else:
-                            Name += str(pygame.key.name(event.key))
-                        if Name.count("") == 25:
-                            Name = Name[:-1]
-                if event.type == KEYDOWN and event.key == K_RETURN:
-                    if Name == "": Name = getpass.getuser()
-                    write = 0
-            screen.blit(bgimg,(0,0))
-            nameview = endscorefont.render(Name, True, (44,44,44))
-            namerequest = endscorefont.render("Enter your name...", True, (213, 98, 0))
-            screen.blit(nameview,(40,150))
-            screen.blit(namerequest,(40,120))
-            pygame.display.update()
-            clock.tick(20)
+        Name = getname(surface=screen,background=bgimg,namecolor=(44,44,44),helptext="Enter your name...",helptextcolor=(213, 98, 0),font="data/FreeMonoBold.ttf")
     else:
-        Name = startup                
+        Name = startup
     score = 0
 
     #Intro Video
