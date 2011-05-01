@@ -72,6 +72,8 @@ pygame.display.set_icon(pygame.image.load("data/icon.png"))
 pygame.display.set_caption('Crazy China Pong - '+version+debug)
 pygame.mixer.init()
 
+bong = pygame.mixer.Sound("data/bong.ogg")
+
 def music(song):
     if song == 10:
         impatient = pygame.mixer.music.load("data/music/impatient.ogg")
@@ -105,6 +107,13 @@ def mpause(musicp):
     else:
         pygame.mixer.music.pause()
         return 1
+
+def textsomething(surface,color,text,size,w,h):
+    size += 2
+    font = pygame.font.Font("data/FreeMonoBold.ttf", int(size))
+    textthing = font.render(text, True, color)
+    surface.blit(textthing,(w,h))
+    return size
 
 whichsong = random.choice(range(10,40,10))
 music(whichsong)
@@ -299,6 +308,9 @@ def main(startup=0,songnumber=10):
     freezecycle = 0
     mouse = 0
     gunmov = 0
+    texthurra = 1000
+    textnogood = 1000
+    textepic = 1000
     while 1:
         previousgh = gunh
         if not pygame.mouse.get_rel()[1] == 0:
@@ -368,6 +380,7 @@ def main(startup=0,songnumber=10):
     
             #Vertical Bounce
             if not 370 > guyh > -10:
+                bong.play()
                 guydirs = guydirs - (guydirs*2)
             guyh = guyh + guydirs
 
@@ -380,6 +393,7 @@ def main(startup=0,songnumber=10):
             else:
                 guyw += guyspeed
             if guyw > 560:
+                bong.play()
                 east = 0
         else:
             farmer = guy
@@ -389,6 +403,7 @@ def main(startup=0,songnumber=10):
             else:
                 guyw -= guyspeed
             if guyw < 31 and guyh > gunh-40 and guyh < gunh+100:
+                bong.play()
                 east = 1
                 guydirs = guydirs- (gunh-(guyh+20)+50)/50.0
                 if previousgh > gunh:
@@ -472,12 +487,12 @@ def main(startup=0,songnumber=10):
             ballw = random.choice(range(100,550,50))
             balls = 1
         #Bonus
-        randombonus = random.randint(1,1000)
+        randombonus = random.randint(1,100)#1000
         if not bonusactive and randombonus == 99:
             bonush = random.choice(range(10,390,10))
             bonusactive = 1
         #Bad bonus
-        randombadbonus = random.randint(1,2000)
+        randombadbonus = random.randint(1,200)#2000
         if not badbonusactive and randombadbonus == 199:
             badbonush = random.choice(range(5,385,10))
             badbonusactive = 1
@@ -490,6 +505,8 @@ def main(startup=0,songnumber=10):
             screen.blit(freezeball,(ballw,ballh))
             ballh += 1
             if ballw < guyw+40 and ballw+40 > guyw and ballh+40 > guyh and ballh < guyh+40:
+                textepic = 12
+                vgoodw, vgoodh = ballw, ballh
                 ballh = -50
                 freeze = 1
                 balls = 0
@@ -508,6 +525,8 @@ def main(startup=0,songnumber=10):
 
             bonusw -= 2
             if 5 < bonusw < 30 and bonush+20 > gunh and bonush < gunh+100:
+                texthurra = 12
+                hurraw, hurrah = bonusw, bonush
                 score += prize
                 bonuspoints += prize
                 bonusactive = 0
@@ -526,6 +545,8 @@ def main(startup=0,songnumber=10):
 
             badbonusw -= 3
             if 5 < badbonusw < 30 and badbonush+20 > gunh and badbonush < gunh+100:
+                textnogood = 12
+                nogoodw, nogoodh = badbonusw, badbonush
                 score += badprize
                 bonuspoints += badprize
                 badbonusactive = 0
@@ -550,6 +571,16 @@ def main(startup=0,songnumber=10):
                 freezecycle = 0
                 gunspeed = 8
                 bgimg = bg
+
+        if texthurra < 80:
+            texthurra = textsomething(screen,(1,121,29),"Good!",texthurra,hurraw+10,hurrah-30)
+
+        if textnogood < 80:
+            textnogood = textsomething(screen,(191,0,0),"Bad!",textnogood,nogoodw+10,nogoodh-30)
+
+        if textepic < 80:
+            textepic = textsomething(screen,(127,166,255),"Epic!",textepic,vgoodw,vgoodh)
+
 
         #The score algorithm
         if score < 0:
