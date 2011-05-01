@@ -29,7 +29,7 @@ from pygnamelib.pygnamelib import getname
     #Robert Maehl - ALL - While in Debug Mode hold both left and right arrows to make the guy bounce.
     #SmartViking - Robert Maehl - It's better to add an additional condition to an if statement than to indent 100 lines of code.
 
-version = "1.5" #Version Control
+version = "1.5.1" #Version Control
 debug = "" #Debug Control
 skipvid = False #Video Control
 
