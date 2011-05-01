@@ -72,7 +72,9 @@ pygame.display.set_icon(pygame.image.load("data/icon.png"))
 pygame.display.set_caption('Crazy China Pong - '+version+debug)
 pygame.mixer.init()
 
-bong = pygame.mixer.Sound("data/bong.ogg")
+bong = pygame.mixer.Sound("data/sounds/bong.ogg")
+badsound = pygame.mixer.Sound("data/sounds/bad.ogg")
+goodsound = pygame.mixer.Sound("data/sounds/good.ogg")
 
 def music(song):
     if song == 10:
@@ -506,6 +508,7 @@ def main(startup=0,songnumber=10):
             ballh += 1
             if ballw < guyw+40 and ballw+40 > guyw and ballh+40 > guyh and ballh < guyh+40:
                 textepic = 12
+                goodsound.play()
                 vgoodw, vgoodh = ballw, ballh
                 ballh = -50
                 freeze = 1
@@ -525,6 +528,7 @@ def main(startup=0,songnumber=10):
 
             bonusw -= 2
             if 5 < bonusw < 30 and bonush+20 > gunh and bonush < gunh+100:
+                goodsound.play()
                 texthurra = 12
                 hurraw, hurrah = bonusw, bonush
                 score += prize
@@ -545,6 +549,7 @@ def main(startup=0,songnumber=10):
 
             badbonusw -= 3
             if 5 < badbonusw < 30 and badbonush+20 > gunh and badbonush < gunh+100:
+                badsound.play()
                 textnogood = 12
                 nogoodw, nogoodh = badbonusw, badbonush
                 score += badprize
