@@ -27,9 +27,8 @@ from pygnamelib.pygnamelib import getname
     #Robert Maehl - ALL - I recommend using scite for editing from now on (sudo apt-get install scite)
     #Robert Maehl - ALL - You can change scite's spacing and tabs using Ctrl + Shift + I
     #Robert Maehl - ALL - While in Debug Mode hold both left and right arrows to make the guy bounce.
-    #SmartViking - Robert Maehl - It's better to add an additional condition to an if statement than to indent 100 lines of code.
 
-version = "1.5.1" #Version Control
+version = "1.5.2" #Version Control
 debug = "" #Debug Control
 skipvid = False #Video Control
 
@@ -578,10 +577,10 @@ def main(startup=0,songnumber=10):
                 bgimg = bg
 
         if texthurra < 80:
-            texthurra = textsomething(screen,(1,121,29),"Good!",texthurra,hurraw+10,hurrah-30)
+            texthurra = textsomething(screen,(1,121,29),"Woot!",texthurra,hurraw+10,hurrah-30)
 
         if textnogood < 80:
-            textnogood = textsomething(screen,(191,0,0),"Bad!",textnogood,nogoodw+10,nogoodh-30)
+            textnogood = textsomething(screen,(191,0,0),"Too bad...",textnogood,nogoodw+10,nogoodh-30)
 
         if textepic < 80:
             textepic = textsomething(screen,(127,166,255),"Epic!",textepic,vgoodw,vgoodh)
