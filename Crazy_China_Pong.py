@@ -22,15 +22,18 @@ from string import ascii_lowercase
 from pygnamelib.pygnamelib import getname
 
 
-version = "1.5.3" #Version Control
+version = "1.5.3.1" #Version Control
 debug = "" #Debug Control
 skipvid = False #Video Control
 fullscreen = 0 # Not fullscreen by default.
+autoplay = False #Autoplay Control
 
 #Add arguments to argumentlist as you add them.
-argumentlist = ["--novideo","--version","-v","--credits","--debug","-d","--bug","-b","--fullscreen","-f"]
+argumentlist = ["--novideo","--version","-v","--credits","--debug","-d","--bug","-b","--fullscreen","-f","-a"]
 
 for argument in sys.argv:
+    if argument == "-a":
+        autoplay = True
     if argument == "--novideo":
         skipvid = True
     if argument == "--version" or argument == "-v":
@@ -334,6 +337,33 @@ def main(fullscreen,startup=0,songnumber=10):
                 songnumber = nextsong(songnumber)
         keystate = pygame.key.get_pressed()
 
+        #Horizontal Bounce
+        if east:
+            farmer = guy2
+            if debug == True:
+                if keystate[pygame.K_RIGHT]:
+                    guyw = guyw + 4
+            else:
+                guyw += guyspeed
+            if guyw > 560:
+                bong.play()
+                east = 0
+        else:
+            farmer = guy
+            if debug == True:
+                if keystate[pygame.K_LEFT]:
+                    guyw = guyw - 4
+            else:
+                guyw -= guyspeed
+            if guyw < 31 and guyh > gunh-40 and guyh < gunh+100:
+                bong.play()
+                east = 1
+                guydirs = guydirs- (gunh-(guyh+20)+50)/50.0
+                if previousgh > gunh:
+                    guydirs -= 0.6
+                elif previousgh < gunh:
+                    guydirs += 0.6
+
         #Controls
         if debug == True:
             if keystate[115]:
@@ -383,39 +413,14 @@ def main(fullscreen,startup=0,songnumber=10):
                     gunh += 5
 
             gunh += gunmov
-    
+            if autoplay == True:
+                gunh = guyh - 50
+
             #Vertical Bounce
             if not 370 > guyh > -10:
                 bong.play()
                 guydirs = guydirs - (guydirs*2)
             guyh = guyh + guydirs
-
-        #Horizontal Bounce
-        if east:
-            farmer = guy2
-            if debug == True:
-                if keystate[pygame.K_RIGHT]:
-                    guyw = guyw + 4
-            else:
-                guyw += guyspeed
-            if guyw > 560:
-                bong.play()
-                east = 0
-        else:
-            farmer = guy
-            if debug == True:
-                if keystate[pygame.K_LEFT]:
-                    guyw = guyw - 4
-            else:
-                guyw -= guyspeed
-            if guyw < 31 and guyh > gunh-40 and guyh < gunh+100:
-                bong.play()
-                east = 1
-                guydirs = guydirs- (gunh-(guyh+20)+50)/50.0
-                if previousgh > gunh:
-                    guydirs -= 0.6
-                elif previousgh < gunh:
-                    guydirs += 0.6
 
         #Pause Screen
         if guyw < 0:
@@ -595,7 +600,7 @@ def main(fullscreen,startup=0,songnumber=10):
         if score < 0:
             score = 0
         if debug == False:
-            guyspeed += 0.001
+            guyspeed += 0.0005
             scorespeed = 0.02*(guyspeed)
 
         else:
@@ -607,4 +612,3 @@ def main(fullscreen,startup=0,songnumber=10):
         clock.tick(gamespeed)
 
 if __name__ == "__main__": main(fullscreen,2,whichsong)
-
