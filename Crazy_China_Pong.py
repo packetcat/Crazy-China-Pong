@@ -21,16 +21,14 @@ from pygame.locals import *
 from string import ascii_lowercase
 from pygnamelib.pygnamelib import getname
 
-#Developer notes to other developers (Format is: From - To - Message)
-    #Robert Maehl - Smartviking - Please name your variables better.
-    #Robert Maehl - Smartviking - We need to make it so the resources get reused instead of drawn with each game.
-    #Robert Maehl - ALL - I recommend using scite for editing from now on (sudo apt-get install scite)
-    #Robert Maehl - ALL - You can change scite's spacing and tabs using Ctrl + Shift + I
-    #Robert Maehl - ALL - While in Debug Mode hold both left and right arrows to make the guy bounce.
 
-version = "1.5.2" #Version Control
+version = "1.5.3" #Version Control
 debug = "" #Debug Control
 skipvid = False #Video Control
+fullscreen = 0 # Not fullscreen by default.
+
+#Add arguments to argumentlist as you add them.
+argumentlist = ["--novideo","--version","-v","--credits","--debug","-d","--bug","-b","--fullscreen","-f"]
 
 for argument in sys.argv:
     if argument == "--novideo":
@@ -64,6 +62,11 @@ for argument in sys.argv:
                 sys.exit()
         else:
             pass
+    if argument == "--fullscreen" or argument == "-f":
+        fullscreen = 1
+    if argument not in argumentlist and argument != sys.argv[0]:
+        print argument+" <- Unknown argument"
+        sys.exit()
 pygame.mixer.pre_init()
 pygame.init()
 
@@ -119,12 +122,14 @@ def textsomething(surface,color,text,size,w,h):
 whichsong = random.choice(range(10,40,10))
 music(whichsong)
 
-def main(startup=0,songnumber=10):
-
+def main(fullscreen,startup=0,songnumber=10):
     musicpause = 0
     clock = pygame.time.Clock() #FPS Clock Method used for Main()
     size = width, height = 600,400
-    screen = pygame.display.set_mode(size)
+    if fullscreen:
+        screen = pygame.display.set_mode(size,pygame.FULLSCREEN)
+    else:
+        screen = pygame.display.set_mode(size)
     debug = os.path.exists(".debug")
 
     font = pygame.font.Font("data/FreeMonoBold.ttf", 12)
@@ -430,7 +435,7 @@ def main(startup=0,songnumber=10):
                 clock.tick(10) #FPS and Resource limiting
                 for event in pygame.event.get():
                     if event.type == KEYDOWN and event.key == K_SPACE:
-                        main(Name)
+                        main(fullscreen,Name)
                     if event.type == pygame.QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
                         sys.exit()
                     if event.type == KEYDOWN and event.key == K_s:
@@ -601,4 +606,5 @@ def main(startup=0,songnumber=10):
         pygame.display.update()
         clock.tick(gamespeed)
 
-if __name__ == "__main__": main(2,whichsong)
+if __name__ == "__main__": main(fullscreen,2,whichsong)
+

@@ -23,3 +23,11 @@ TODO:
  
 KNOWN ISSUES:
     * RAM can get as high as 200+ MB by game 100
+
+Command line arguments:
+    * --novideo          : Start the game without the intro video.
+    * --version/-v       : Show version number.
+    * --credits          : Credits.
+    * --debug/-d         : Enable debugging mode.
+    * --bug/-b           : Disable debugging mode.
+    * --fullscreen/-f    : Play in fullscreen(well almost).
