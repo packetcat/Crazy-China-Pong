@@ -72,7 +72,7 @@ for argument in sys.argv:
         sys.exit()
 pygame.mixer.pre_init()
 pygame.init()
-
+pygame.mixer.set_num_channels(3)
 pygame.display.set_icon(pygame.image.load("data/icon.png"))
 pygame.display.set_caption('Crazy China Pong - '+version+debug)
 pygame.mixer.init()
@@ -128,7 +128,7 @@ music(whichsong)
 def main(fullscreen,startup=0,songnumber=10):
     musicpause = 0
     clock = pygame.time.Clock() #FPS Clock Method used for Main()
-    size = width, height = 600,400
+    size = width, height = 800,600
     if fullscreen:
         screen = pygame.display.set_mode(size,pygame.FULLSCREEN)
     else:
@@ -303,8 +303,8 @@ def main(fullscreen,startup=0,songnumber=10):
     gunspeed = 8
     scorespeed = 0.04 #Score
 
-    badbonusw = 650
-    bonusw = 650
+    badbonusw = 850
+    bonusw = 850
     bonusactive = 0
     bonuspoints = 0
     badbonusactive = 0
@@ -323,7 +323,7 @@ def main(fullscreen,startup=0,songnumber=10):
     while 1:
         previousgh = gunh
         if not pygame.mouse.get_rel()[1] == 0:
-            gunh = (pygame.mouse.get_pos()[1]-250)*1.2+210
+            gunh = (pygame.mouse.get_pos()[1]-250)*1.2+180
             mouse = 151
         if mouse > 0:
             mouse -= 1
@@ -345,7 +345,7 @@ def main(fullscreen,startup=0,songnumber=10):
                     guyw = guyw + 4
             else:
                 guyw += guyspeed
-            if guyw > 560:
+            if guyw > 759:
                 bong.play()
                 east = 0
         else:
@@ -406,7 +406,7 @@ def main(fullscreen,startup=0,songnumber=10):
             if gunmov < -7:
                 gunmov = -7
 
-            if not 300 > gunh > 0 and not mouse:
+            if not 500 > gunh > 0 and not mouse:
                 if gunh > 300:
                     gunh -= 5
                 else:
@@ -417,7 +417,7 @@ def main(fullscreen,startup=0,songnumber=10):
                 gunh = guyh - 50
 
             #Vertical Bounce
-            if not 370 > guyh > -10:
+            if not 570 > guyh > -10:
                 bong.play()
                 guydirs = guydirs - (guydirs*2)
             guyh = guyh + guydirs
@@ -495,17 +495,17 @@ def main(fullscreen,startup=0,songnumber=10):
         #Freeze ball
         randomball = random.randint(1,1000)
         if not balls and not freeze and randomball == 399:
-            ballw = random.choice(range(100,550,50))
+            ballw = random.choice(range(100,750,50))
             balls = 1
         #Bonus
         randombonus = random.randint(1,100)#1000
         if not bonusactive and randombonus == 99:
-            bonush = random.choice(range(10,390,10))
+            bonush = random.choice(range(10,590,10))
             bonusactive = 1
         #Bad bonus
         randombadbonus = random.randint(1,200)#2000
         if not badbonusactive and randombadbonus == 199:
-            badbonush = random.choice(range(5,385,10))
+            badbonush = random.choice(range(5,585,10))
             badbonusactive = 1
         #Rendering
         screen.blit(bgimg,(0,0))
@@ -522,13 +522,13 @@ def main(fullscreen,startup=0,songnumber=10):
                 ballh = -50
                 freeze = 1
                 balls = 0
-            if ballh > 405:
+            if ballh > 605:
                 ballh = -50
                 balls = 0
 
         #Bonus Calculations
         if bonusactive:
-            if bonusw == 650:
+            if bonusw == 850:
                 prize = random.randint(100,180)
 
             bonusamount = bonusfont.render(str(prize), True, (255, 255, 255))
@@ -543,13 +543,13 @@ def main(fullscreen,startup=0,songnumber=10):
                 score += prize
                 bonuspoints += prize
                 bonusactive = 0
-                bonusw = 650
+                bonusw = 850
             if bonusw < -50:
                 bonusactive = 0
-                bonusw = 650
+                bonusw = 850
 
         if badbonusactive:
-            if badbonusw == 650:
+            if badbonusw == 850:
                 badprize = random.randint(-99,-30)
 
             badprizeamount = bonusfont.render(str(badprize), True, (255, 255, 255))
@@ -564,10 +564,10 @@ def main(fullscreen,startup=0,songnumber=10):
                 score += badprize
                 bonuspoints += badprize
                 badbonusactive = 0
-                badbonusw = 650
+                badbonusw = 850
             if badbonusw < -50:
                 badbonusactive = 0
-                badbonusw = 650
+                badbonusw = 850
 
         screen.blit(farmer,(guyw,guyh))
         screen.blit(gun,(30,gunh))
