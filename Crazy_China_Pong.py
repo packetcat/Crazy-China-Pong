@@ -432,8 +432,8 @@ def main(fullscreen,startup=0,songnumber=10):
                 #Pause screen rendering
                 screen.blit(bgimg,(0,0))
                 screen.blit(finished,(0,0))
-                #text = endscorefont.render(" "*4+"Your final score was: "+str(int(score))+" "*40, True, (255, 255, 255), (213, 98, 0))
-		text = endscorefont.render(" "*4+"Final speed was: "+str(guyspeed)+" "*40, True, (255, 255, 255), (213, 98, 0))                
+                text = endscorefont.render(" "*4+"Your final score was: "+str(int(score))+" "*40, True, (255, 255, 255), (213, 98, 0))
+		#text = endscorefont.render(" "*4+"Final speed was: "+str(guyspeed)+" "*40, True, (255, 255, 255), (213, 98, 0))                
 		screen.blit(farmer,(guyw,guyh))
                 screen.blit(gun,(30,gunh))
                 screen.blit(text,(0,369))
