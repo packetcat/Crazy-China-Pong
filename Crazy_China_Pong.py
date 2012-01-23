@@ -22,7 +22,7 @@ from string import ascii_lowercase
 from pygnamelib.pygnamelib import getname
 
 
-version = "1.5.3.2" #Version Control
+version = "1.6" #Version Control
 debug = "" #Debug Control
 skipvid = False #Video Control
 fullscreen = 0 # Not fullscreen by default.
@@ -69,8 +69,9 @@ for argument in sys.argv:
     if argument == "--fullscreen" or argument == "-f":
         fullscreen = 1
     if argument not in argumentlist and argument != sys.argv[0]:
-        print argument+" <- Unknown argument"
-        sys.exit()
+        print "Unknown argument: "+argument
+        sys.exit(1)
+
 pygame.mixer.pre_init()
 pygame.init()
 pygame.mixer.set_num_channels(3)
@@ -238,7 +239,6 @@ def main(fullscreen,startup=0,songnumber=10):
                     coldh += 0.7
                 cold = endscorefont.render("This is very good (and cold).", True, (255,224,219))
                 screen.blit(cold, (coldw,coldh))
-
                 if videocycle < 585:
                     screen.blit(freezeball, (440,vballh))
                 if 650 > videocycle > 600:
@@ -310,6 +310,7 @@ def main(fullscreen,startup=0,songnumber=10):
     bonuspoints = 0
     badbonusactive = 0
     gamespeed = 90
+    pause = False
 
     balls = 0
     ballw = 0
@@ -336,9 +337,20 @@ def main(fullscreen,startup=0,songnumber=10):
                 musicpause = mpause(musicpause)
             if event.type == KEYDOWN and event.key == K_n or not pygame.mixer.music.get_busy():
                 songnumber = nextsong(songnumber)
+            if event.type == KEYDOWN and event.key == K_p:
+                text = font.render("Paused", True, (255, 255, 255), (213, 98, 0))
+                screen.blit(text,(740,10))
+                pygame.display.update()
+                pause = True
         keystate = pygame.key.get_pressed()
+        while pause:
+            time.sleep(0.1)
+            for event in pygame.event.get():
+                if event.type == KEYDOWN and event.key == K_p:
+                    pause = False
+                if event.type == pygame.QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
+                    sys.exit()
 
-	#Autoplay
         if autoplay == True:
             gunh = guyh - 50
 
@@ -393,48 +405,46 @@ def main(fullscreen,startup=0,songnumber=10):
                     gunmov = 0
                 gunmov += gunspeed/3.0
 
+        if -0.2 < gunmov < 0.2:
+            gunmov = 0
+        elif gunmov > 0:
+            gunmov -= 0.15
+            if not keystate[pygame.K_DOWN]:
+                gunmov -= 0.5
+        elif gunmov < 0:
+            if not keystate[pygame.K_UP]:
+                gunmov += 0.5
+            gunmov += 0.15
 
-            if -0.2 < gunmov < 0.2:
-                gunmov = 0
+        if gunmov > 7:
+            gunmov = 7
+        if gunmov < -7:
+            gunmov = -7
 
-            elif gunmov > 0:
-                gunmov -= 0.15
-                if not keystate[pygame.K_DOWN]:
-                    gunmov -= 0.5
-            elif gunmov < 0:
-                if not keystate[pygame.K_UP]:
-                    gunmov += 0.5
-                gunmov += 0.15
+        if not 500 > gunh > 0 and not mouse:
+            if gunh > 300:
+                gunh -= 5
+            else:
+                gunh += 5
 
-            if gunmov > 7:
-                gunmov = 7
-            if gunmov < -7:
-                gunmov = -7
+        gunh += gunmov
 
-            if not 500 > gunh > 0 and not mouse:
-                if gunh > 300:
-                    gunh -= 5
-                else:
-                    gunh += 5
+        #Vertical Bounce
+        if not 570 > guyh > -10:
+            bong.play()
+            guydirs = guydirs - (guydirs*2)
+        guyh = guyh + guydirs
 
-            gunh += gunmov
-
-            #Vertical Bounce
-            if not 570 > guyh > -10:
-                bong.play()
-                guydirs = guydirs - (guydirs*2)
-            guyh = guyh + guydirs
-
-        #Pause Screen
+        #End Screen
         if guyw < 0:
             writefile = 1
             while 1:
-                #Pause screen rendering
+                #End screen rendering
                 screen.blit(bgimg,(0,0))
                 screen.blit(finished,(0,0))
                 text = endscorefont.render(" "*4+"Your final score was: "+str(int(score))+" "*40, True, (255, 255, 255), (213, 98, 0))
-		#text = endscorefont.render(" "*4+"Final speed was: "+str(guyspeed)+" "*40, True, (255, 255, 255), (213, 98, 0))                
-		screen.blit(farmer,(guyw,guyh))
+                #text = endscorefont.render(" "*4+"Final speed was: "+str(guyspeed)+" "*40, True, (255, 255, 255), (213, 98, 0))
+                screen.blit(farmer,(guyw,guyh))
                 screen.blit(gun,(30,gunh))
                 screen.blit(text,(0,369))
                 pygame.display.update()
@@ -444,7 +454,7 @@ def main(fullscreen,startup=0,songnumber=10):
                 clock.tick(10) #FPS and Resource limiting
                 for event in pygame.event.get():
                     if event.type == KEYDOWN and event.key == K_SPACE:
-                        main(fullscreen,Name)
+                        return Name
                     if event.type == pygame.QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
                         sys.exit()
                     if event.type == KEYDOWN and event.key == K_s:
@@ -458,11 +468,10 @@ def main(fullscreen,startup=0,songnumber=10):
                             player,score = line.split(",")
                             playerscore[int(score)] = player
                         f.close
-
                         screen.blit(bgimg,(0,0))
                         screen.blit(farmer,(guyw,guyh))
                         screen.blit(gun,(30,gunh))
-                        stopten= 0
+                        stopten = 0
                         heightheight = 60
                         for i in sorted(playerscore.keys(), reverse=True):
                             stopten += 1
@@ -483,37 +492,36 @@ def main(fullscreen,startup=0,songnumber=10):
                         screen.blit(text,(0,369))
 
                         pygame.display.update()
-                        pause = 1
-                        while pause:
+                        endpause = 1
+                        while endpause:
                             for event in pygame.event.get():
                                 if event.type == pygame.QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
                                     sys.exit()
                                 if event.type == KEYDOWN and event.key == K_RETURN or event.type == KEYDOWN and event.key == K_h:
-                                    pause = 0
+                                    endpause = 0
                                 if event.type == KEYDOWN and event.key == K_s:
                                     musicpause = mpause(musicpause)
                                 if event.type == KEYDOWN and event.key == K_n or not pygame.mixer.music.get_busy():
                                     songnumber = nextsong(songnumber)
 
-                                    
         #Freeze ball
         randomball = random.randint(1,1000)
         if not balls and not freeze and randomball == 399:
             ballw = random.choice(range(100,750,50))
             balls = 1
         #Bonus
-        randombonus = random.randint(1,1000)#1000
+        randombonus = random.randint(1,1000)
         if not bonusactive and randombonus == 99:
             bonush = random.choice(range(10,590,10))
             bonusactive = 1
         #Bad bonus
-        randombadbonus = random.randint(1,2000)#2000
+        randombadbonus = random.randint(1,2000)
         if not badbonusactive and randombadbonus == 199:
             badbonush = random.choice(range(5,585,10))
             badbonusactive = 1
         #Rendering
         screen.blit(bgimg,(0,0))
-        text = font.render(" Score: "+str(int(score))+"  "+"Speed: "+str(guyspeed)+" ", True, (255, 255, 255), (213, 98, 0))
+        text = font.render(" Score: "+str(int(score))+"  "+"Speed: "+str(int(guyspeed))+" ", True, (255, 255, 255), (213, 98, 0))
         screen.blit(text, (50,10))
 
         if balls:
@@ -599,25 +607,27 @@ def main(fullscreen,startup=0,songnumber=10):
         if textepic < 80:
             textepic = textsomething(screen,(127,166,255),"Epic!",textepic,vgoodw,vgoodh)
 
-
         #The score algorithm
         if score < 0:
             score = 0
         if debug == False and guyspeed < 32:
             guyspeed += 0.0005
-	    scorespeed = 0.02*(guyspeed)
-	#Speed limiter; Max Starting from 4 is 32.509; Max as Start is approx 92
-		#How game calculates positions is to blame. Will correct and upload in later version
-	#Recommend to set speed cap to 16 as testing as resulted in 14 being the average speed that people lose at
-	elif debug == False and guyspeed >= 32:
-	    guyspeed = 32
-	    scorespeed = 0.64
+            scorespeed = 0.02*(guyspeed)
+        #Speed limiter; Max Starting from 4 is 32.509; Max as Start is approx 92
+        #How game calculates positions is to blame. Will correct and upload in later version
+        #Recommend to set speed cap to 16 as testing as resulted in 14 being the average speed that people lose at
+        elif debug == False and guyspeed >= 32:
+            guyspeed = 32
+            scorespeed = 0.64
         else:
             guyspeed = 0
-            scorespeed = 0.15  
+            scorespeed = 0.15
 
         #Update Screen
         pygame.display.update()
         clock.tick(gamespeed)
 
-if __name__ == "__main__": main(fullscreen,2,whichsong)
+name = main(fullscreen,2)
+print name
+while 1:
+    main(fullscreen,name)
