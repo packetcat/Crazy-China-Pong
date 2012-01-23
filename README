@@ -19,10 +19,6 @@ Testing done:
 
 TODO:
     * Some type of powerups, I'm thinking simple but effective. 
-    * Fix increasing RAM usage with each new game
- 
-KNOWN ISSUES:
-    * RAM can get as high as 200+ MB by game 100
 
 Command line arguments:
     * --novideo          : Start the game without the intro video.
