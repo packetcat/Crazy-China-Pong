@@ -11,11 +11,12 @@ MAC USERS:
 You should already have Python installed, just download a version of python-pygame - http://pygame.org/download.shtml
 
 Testing done:
-- Tested with python 2.6 and pygame 1.8.1.
+- Tested with python 2.6 to python 2.7
+- Tested with pygame 1.8.1 to pygame 1.9.1
 - Tested with Arch Linux, Debian 6, Fedora 15 and Ubuntu, should work for all.
 - Tested on Windows 7 x64, with Python 2.7 x64 with pygame 1.9.2 pre. 
 - Tested on latest OS X with python 2.6 and pygame 1.9.2 pre
-- Does NOT work with Python 3.x.
+- Does NOT currently work with Python 3.x.
 
 TODO:
     * Some type of powerups, I'm thinking simple but effective. 
@@ -25,5 +26,4 @@ Command line arguments:
     * --version/-v       : Show version number.
     * --credits          : Credits.
     * --debug/-d         : Enable debugging mode.
-    * --bug/-b           : Disable debugging mode.
     * --fullscreen/-f    : Play in fullscreen(well almost).

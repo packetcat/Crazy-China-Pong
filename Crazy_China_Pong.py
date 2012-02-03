@@ -22,7 +22,7 @@ from string import ascii_lowercase
 from pygnamelib.pygnamelib import getname
 
 
-version = "1.6" #Version Control
+version = "1.6.1" #Version Control
 debug = "" #Debug Control
 skipvid = False #Video Control
 fullscreen = 0 # Not fullscreen by default.
@@ -30,7 +30,7 @@ autoplay = False #Autoplay Control
 netbook = False #Future Netbook Compatibility Argument
 
 #Add arguments to argumentlist as you add them.
-argumentlist = ["--novideo","--version","-v","--credits","--debug","-d","--bug","-b","--fullscreen","-f","-a"]
+argumentlist = ["--novideo","--version","-v","--credits","--debug","-d","--fullscreen","-f","-a"]
 
 for argument in sys.argv:
     if argument == "-a":
@@ -59,9 +59,6 @@ for argument in sys.argv:
     if argument == "--debug" or argument == "-d":
         open('.debug', 'w').close()
         debug = " - Debug Mode"
-    if argument == "--bug" or argument == "-b":
-        if os.path.exists(".debug") == True:
-            os.remove('.debug')
         if argument == sys.argv[-1]:
                 sys.exit()
         else:
@@ -267,6 +264,8 @@ def main(fullscreen,startup=0,songnumber=10):
                             while textloop:
                                 for event in pygame.event.get():
                                     if event.type == pygame.QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
+                                        if debug:
+                                            os.remove('.debug')
                                         sys.exit()
                                     if event.type == KEYDOWN and event.key == K_RETURN or event.type == KEYDOWN and event.key == K_SPACE:
                                         video = 0
@@ -299,7 +298,7 @@ def main(fullscreen,startup=0,songnumber=10):
 
     guydirs = 0.2 #+/- Value guyh per loop
     guyspeed = 4
-    if debug == True:
+    if debug:
         guyspeed = 0
     gunspeed = 8
     scorespeed = 0.04 #Score
@@ -349,15 +348,17 @@ def main(fullscreen,startup=0,songnumber=10):
                 if event.type == KEYDOWN and event.key == K_p:
                     pause = False
                 if event.type == pygame.QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
+                    if debug:
+                        os.remove('.debug')
                     sys.exit()
 
-        if autoplay == True:
-            gunh = guyh - 50
+        if autoplay:
+            gunh = guyh-50
 
         #Horizontal Bounce
         if east:
             farmer = guy2
-            if debug == True:
+            if debug:
                 if keystate[pygame.K_RIGHT]:
                     guyw = guyw + 4
             else:
@@ -367,7 +368,7 @@ def main(fullscreen,startup=0,songnumber=10):
                 east = 0
         else:
             farmer = guy
-            if debug == True:
+            if debug:
                 if keystate[pygame.K_LEFT]:
                     guyw = guyw - 4
             else:
@@ -382,7 +383,7 @@ def main(fullscreen,startup=0,songnumber=10):
                     guydirs += 0.6
 
         #Controls
-        if debug == True:
+        if debug:
             if keystate[115]:
                 gunh += gunspeed
             if keystate[119]:
@@ -435,8 +436,11 @@ def main(fullscreen,startup=0,songnumber=10):
             guydirs = guydirs - (guydirs*2)
         guyh = guyh + guydirs
 
+        if autoplay:
+            gunh = guyh-50
+
         #End Screen
-        if guyw < 0:
+        if guyw+10 < 0:
             writefile = 1
             while 1:
                 #End screen rendering
@@ -456,13 +460,15 @@ def main(fullscreen,startup=0,songnumber=10):
                     if event.type == KEYDOWN and event.key == K_SPACE:
                         return Name
                     if event.type == pygame.QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
+                        if debug:
+                            os.remove('.debug')
                         sys.exit()
                     if event.type == KEYDOWN and event.key == K_s:
                         musicpause = mpause(musicpause)
                     if event.type == KEYDOWN and event.key == K_n or not pygame.mixer.music.get_busy():
                         songnumber = nextsong(songnumber)
                     if event.type == KEYDOWN and event.key == K_h:
-                        f = open(".score")
+                        f = (".score")
                         playerscore = {}
                         for line in f:
                             player,score = line.split(",")
@@ -496,6 +502,8 @@ def main(fullscreen,startup=0,songnumber=10):
                         while endpause:
                             for event in pygame.event.get():
                                 if event.type == pygame.QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
+                                    if debug:
+                                        os.remove('.debug')
                                     sys.exit()
                                 if event.type == KEYDOWN and event.key == K_RETURN or event.type == KEYDOWN and event.key == K_h:
                                     endpause = 0
@@ -505,17 +513,17 @@ def main(fullscreen,startup=0,songnumber=10):
                                     songnumber = nextsong(songnumber)
 
         #Freeze ball
-        randomball = random.randint(1,1000)
+        randomball = random.randint(1,398)#1000
         if not balls and not freeze and randomball == 399:
             ballw = random.choice(range(100,750,50))
             balls = 1
         #Bonus
-        randombonus = random.randint(1,1000)
+        randombonus = random.randint(1,98)#1000
         if not bonusactive and randombonus == 99:
             bonush = random.choice(range(10,590,10))
             bonusactive = 1
         #Bad bonus
-        randombadbonus = random.randint(1,2000)
+        randombadbonus = random.randint(1,198)#2000
         if not badbonusactive and randombadbonus == 199:
             badbonush = random.choice(range(5,585,10))
             badbonusactive = 1
@@ -610,15 +618,15 @@ def main(fullscreen,startup=0,songnumber=10):
         #The score algorithm
         if score < 0:
             score = 0
-        if debug == False and guyspeed < 32:
+        if not debug:# and guyspeed < 32:
             guyspeed += 0.0005
             scorespeed = 0.02*(guyspeed)
         #Speed limiter; Max Starting from 4 is 32.509; Max as Start is approx 92
         #How game calculates positions is to blame. Will correct and upload in later version
         #Recommend to set speed cap to 16 as testing as resulted in 14 being the average speed that people lose at
-        elif debug == False and guyspeed >= 32:
-            guyspeed = 32
-            scorespeed = 0.64
+#        elif not debug and guyspeed >= 32:
+#            guyspeed = 32
+#            scorespeed = 0.64
         else:
             guyspeed = 0
             scorespeed = 0.15
@@ -628,6 +636,5 @@ def main(fullscreen,startup=0,songnumber=10):
         clock.tick(gamespeed)
 
 name = main(fullscreen,2)
-print name
 while 1:
     main(fullscreen,name)
