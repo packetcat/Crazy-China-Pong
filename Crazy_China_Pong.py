@@ -513,17 +513,17 @@ def main(fullscreen,startup=0,songnumber=10):
                                     songnumber = nextsong(songnumber)
 
         #Freeze ball
-        randomball = random.randint(1,398)#1000
+        randomball = random.randint(1,1000)
         if not balls and not freeze and randomball == 399:
             ballw = random.choice(range(100,750,50))
             balls = 1
         #Bonus
-        randombonus = random.randint(1,98)#1000
+        randombonus = random.randint(1,1000)
         if not bonusactive and randombonus == 99:
             bonush = random.choice(range(10,590,10))
             bonusactive = 1
         #Bad bonus
-        randombadbonus = random.randint(1,198)#2000
+        randombadbonus = random.randint(1,2000)
         if not badbonusactive and randombadbonus == 199:
             badbonush = random.choice(range(5,585,10))
             badbonusactive = 1
@@ -618,15 +618,15 @@ def main(fullscreen,startup=0,songnumber=10):
         #The score algorithm
         if score < 0:
             score = 0
-        if not debug:# and guyspeed < 32:
+        if not debug and guyspeed < 32:
             guyspeed += 0.0005
             scorespeed = 0.02*(guyspeed)
         #Speed limiter; Max Starting from 4 is 32.509; Max as Start is approx 92
         #How game calculates positions is to blame. Will correct and upload in later version
         #Recommend to set speed cap to 16 as testing as resulted in 14 being the average speed that people lose at
-#        elif not debug and guyspeed >= 32:
-#            guyspeed = 32
-#            scorespeed = 0.64
+        elif not debug and guyspeed >= 32:
+            guyspeed = 32
+            scorespeed = 0.64
         else:
             guyspeed = 0
             scorespeed = 0.15
