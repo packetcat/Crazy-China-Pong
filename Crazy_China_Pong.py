@@ -22,7 +22,7 @@ from string import ascii_lowercase
 from pygnamelib.pygnamelib import getname
 
 
-version = "1.6.1" #Version Control
+version = "1.6.2" #Version Control
 debug = "" #Debug Control
 skipvid = False #Video Control
 fullscreen = 0 # Not fullscreen by default.
@@ -257,7 +257,7 @@ def main(fullscreen,startup=0,songnumber=10):
                             introtext2 = endscorefont.render("farmer escape to the western", True, (0,50,0))
                             introtext3 = endscorefont.render("world.", True, (0,50,0))
                             introtext4 = endscorefont.render("Stop him by controlling", True, (0,50,0))
-                            introtext5 = endscorefont.render("the block... thing with the", True, (0,50,0))
+                            introtext5 = endscorefont.render("the paddle by using the", True, (0,50,0))
                             introtext6 = endscorefont.render("arrow keys or the mouse.", True, (0,50,0))
                             introtext7 = endscorefont.render("You win if you have fun.", True, (0,50,0))
                             introtext8 = endscorefont.render("Good luck!", True, (0,50,0))
@@ -635,6 +635,7 @@ def main(fullscreen,startup=0,songnumber=10):
         pygame.display.update()
         clock.tick(gamespeed)
 
+#Fix to Redundant Main Calling Main memory leak
 name = main(fullscreen,2)
 while 1:
     main(fullscreen,name)
